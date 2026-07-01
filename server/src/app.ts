@@ -10,7 +10,8 @@ import meRoutes from "./routes/me.routes";
 
 export const app = express();
 
-app.use(cors({ origin: env.corsOrigin }));
+const allowedOrigins = env.corsOrigin.split(",").map((o) => o.trim());
+app.use(cors({ origin: allowedOrigins }));
 
 const jsonParser = express.json();
 app.use((req, res, next) => {

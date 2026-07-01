@@ -4,7 +4,7 @@ import { env } from "../config/env";
 const resend = new Resend(env.resendApiKey);
 
 export async function sendVerificationEmail(toEmail: string, token: string): Promise<void> {
-  const link = `${env.appUrl}/verify-email?token=${token}`;
+  const link = `${env.appUrl}/#/verify-email?token=${token}`;
   await resend.emails.send({
     from: env.emailFrom,
     to: toEmail,

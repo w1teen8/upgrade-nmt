@@ -23,7 +23,7 @@ export function buildPaymentForm(course: Course, orderId: string): LiqPayFormDat
     currency: "UAH",
     description: course.title,
     order_id: orderId,
-    result_url: `${env.appUrl}/payment/result?orderId=${orderId}`,
+    result_url: `${env.appUrl}/#/payment/result?orderId=${orderId}`,
     server_url: `${env.serverUrl}/api/payments/liqpay/webhook`,
   };
   if (env.liqpaySandbox) {
