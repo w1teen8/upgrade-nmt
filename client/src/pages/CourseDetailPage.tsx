@@ -5,6 +5,11 @@ import { useAuth } from "../context/AuthContext";
 
 const TELEGRAM_CONTACT = "https://t.me/w1teen0";
 
+const OLD_PRICE: Record<string, number> = {
+  full: 1500,
+  turbo: 400,
+};
+
 export function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
@@ -32,7 +37,12 @@ export function CourseDetailPage() {
   return (
     <div className="page course-detail-page">
       <h1>{course.title}</h1>
-      <p className="course-price">{Number(course.price_uah)} грн</p>
+      <p className="course-price">
+        {OLD_PRICE[course.course_type] && (
+          <span className="price-old">{OLD_PRICE[course.course_type]} грн</span>
+        )}
+        {Number(course.price_uah)} грн
+      </p>
       <p className="course-description">{course.description}</p>
 
       {course.topics.length > 0 && (

@@ -234,14 +234,29 @@ p {
   text-align: center;
 }
 
-.hero::before {
+.hero::before,
+.hero::after {
   content: "";
   position: absolute;
-  inset: 0;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
-  background-size: 26px 26px;
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 30%, black 40%, transparent 100%);
+  border-radius: 50%;
   pointer-events: none;
+  filter: blur(60px);
+}
+
+.hero::before {
+  top: -25%;
+  left: -12%;
+  width: 55%;
+  padding-bottom: 55%;
+  background: radial-gradient(circle, rgba(163, 206, 116, 0.35) 0%, transparent 70%);
+}
+
+.hero::after {
+  bottom: -35%;
+  right: -14%;
+  width: 60%;
+  padding-bottom: 60%;
+  background: radial-gradient(circle, rgba(95, 154, 62, 0.3) 0%, transparent 70%);
 }
 
 .hero-inner {
@@ -401,6 +416,14 @@ p {
   color: var(--ink);
   font-weight: 800;
   font-size: 18px;
+}
+
+.price-old {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.75em;
+  text-decoration: line-through;
+  margin-right: 8px;
 }
 
 .course-card-arrow {
