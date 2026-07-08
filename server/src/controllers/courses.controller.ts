@@ -3,6 +3,7 @@ import { listActiveCourses, findCourseBySlug } from "../repositories/courses.rep
 import { listTopicsByCourse } from "../repositories/topics.repo";
 import { listMaterialsByTopicIds } from "../repositories/materials.repo";
 import { hasUserPaidForCourse, listPaidCoursesForUser } from "../repositories/purchases.repo";
+import { listDoneMaterialIds, listCompletedTopicIds } from "../repositories/progress.repo";
 
 export async function listCourses(_req: Request, res: Response) {
   const courses = await listActiveCourses();
@@ -33,7 +34,8 @@ export async function getCourseContent(req: Request, res: Response) {
   }
 
   const topics = await listTopicsByCourse(course.id);
-  const materials = await listMaterialsByTopicIds(topics.map((t) => t.id));
+  const topicIds = topics.map((t) => t.id);
+  const materials = await listMaterialsByTopicIds(topicIds);
   const materialsByTopic = new Map<number, typeof materials>();
   for (const m of materials) {
     const list = materialsByTopic.get(m.topic_id) ?? [];
@@ -41,11 +43,18 @@ export async function getCourseContent(req: Request, res: Response) {
     materialsByTopic.set(m.topic_id, list);
   }
 
+  const doneMaterialIds = new Set(await listDoneMaterialIds(req.user!.sub, topicIds));
+  const completedTopicIds = new Set(await listCompletedTopicIds(req.user!.sub, topicIds));
+
   return res.json({
     ...course,
     topics: topics.map((t) => ({
       ...t,
-      materials: materialsByTopic.get(t.id) ?? [],
+      completed: completedTopicIds.has(t.id),
+      materials: (materialsByTopic.get(t.id) ?? []).map((m) => ({
+        ...m,
+        done: doneMaterialIds.has(m.id),
+      })),
     })),
   });
 }

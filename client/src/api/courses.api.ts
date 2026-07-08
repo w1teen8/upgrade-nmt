@@ -17,6 +17,7 @@ export interface Topic {
   id: number;
   title: string;
   description: string;
+  sort_order: number;
 }
 
 export interface Material {
@@ -24,9 +25,11 @@ export interface Material {
   type: string;
   title: string;
   url: string;
+  done?: boolean;
 }
 
 export interface TopicWithMaterials extends Topic {
+  completed: boolean;
   materials: Material[];
 }
 
@@ -44,4 +47,18 @@ export function getCourseContent(slug: string) {
 
 export function myCourses() {
   return apiFetch<Course[]>("/api/me/courses");
+}
+
+export function setMaterialDone(materialId: number, done: boolean) {
+  return apiFetch<void>(`/api/materials/${materialId}/progress`, {
+    method: "POST",
+    body: { done },
+  });
+}
+
+export function setTopicCompleted(topicId: number, completed: boolean) {
+  return apiFetch<void>(`/api/topics/${topicId}/progress`, {
+    method: "POST",
+    body: { completed },
+  });
 }

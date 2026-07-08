@@ -56,7 +56,7 @@ export function AdminCoursesPage() {
       </table>
 
       {editing && (
-        <form className="admin-form" onSubmit={handleSave}>
+        <form className="admin-form admin-form-wide" onSubmit={handleSave}>
           <h2>Редагувати курс</h2>
           <label>
             Назва
@@ -68,6 +68,7 @@ export function AdminCoursesPage() {
           <label>
             Опис
             <textarea
+              rows={6}
               value={editing.description}
               onChange={(e) => setEditing({ ...editing, description: e.target.value })}
             />
