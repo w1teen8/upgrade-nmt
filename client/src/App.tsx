@@ -1,6 +1,7 @@
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Navbar } from "./components/Navbar";
+import { Footer } from "./components/Footer";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 import { LandingPage } from "./pages/LandingPage";
 import { CourseDetailPage } from "./pages/CourseDetailPage";
@@ -9,7 +10,6 @@ import { LoginPage } from "./pages/LoginPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { CourseContentPage } from "./pages/CourseContentPage";
-import { PaymentResultPage } from "./pages/PaymentResultPage";
 import { AdminCoursesPage } from "./pages/admin/AdminCoursesPage";
 import { AdminTopicsPage } from "./pages/admin/AdminTopicsPage";
 import { AdminMaterialsPage } from "./pages/admin/AdminMaterialsPage";
@@ -20,6 +20,7 @@ export default function App() {
     <HashRouter>
       <AuthProvider>
         <Navbar />
+        <main className="app-main">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/courses/:slug" element={<CourseDetailPage />} />
@@ -30,7 +31,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/dashboard/courses/:slug" element={<CourseContentPage />} />
-            <Route path="/payment/result" element={<PaymentResultPage />} />
+            <Route path="/dashboard/courses/:slug/topics/:topicId" element={<CourseContentPage />} />
           </Route>
 
           <Route element={<AdminRoute />}>
@@ -43,6 +44,8 @@ export default function App() {
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </main>
+        <Footer />
       </AuthProvider>
     </HashRouter>
   );

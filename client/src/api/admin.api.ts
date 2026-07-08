@@ -86,6 +86,20 @@ export function searchUsers(email: string) {
   return apiFetch<AdminUser[]>(`/api/admin/users?email=${encodeURIComponent(email)}`);
 }
 
+export interface CreatedUser {
+  id: number;
+  email: string;
+  password: string;
+  granted: number[];
+}
+
+export function createUser(email: string, courseIds?: number[]) {
+  return apiFetch<CreatedUser>("/api/admin/users", {
+    method: "POST",
+    body: { email, courseIds },
+  });
+}
+
 export function getUserAccess(userId: number) {
   return apiFetch<UserAccess>(`/api/admin/users/${userId}/access`);
 }

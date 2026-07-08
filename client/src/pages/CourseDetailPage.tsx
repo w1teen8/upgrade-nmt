@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCourse, myCourses, Course, Topic } from "../api/courses.api";
 import { useAuth } from "../context/AuthContext";
-import { LiqPayButton } from "../components/LiqPayButton";
+
+const TELEGRAM_CONTACT = "https://t.me/w1teen0";
 
 export function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -50,7 +51,20 @@ export function CourseDetailPage() {
           Перейти до курсу
         </Link>
       ) : (
-        <LiqPayButton courseId={course.id} />
+        <div className="buy-box">
+          <p>
+            Щоб оплатити курс, напишіть нам у Telegram, вкажіть назву курсу — і ми відкриємо
+            доступ одразу після оплати.
+          </p>
+          <a
+            href={TELEGRAM_CONTACT}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-lg"
+          >
+            Написати в Telegram @w1teen0
+          </a>
+        </div>
       )}
     </div>
   );

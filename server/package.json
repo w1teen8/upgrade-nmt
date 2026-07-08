@@ -7,7 +7,9 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
-    "migrate": "tsx src/db/migrate.ts"
+    "migrate": "tsx src/db/migrate.ts",
+    "seed:history": "tsx src/scripts/seed-history-topics.ts",
+    "import:materials": "tsx src/scripts/import-materials-folder.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -15,6 +17,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.12.0",
     "resend": "^3.5.0"
   },
@@ -23,6 +26,7 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
+    "@types/multer": "^1.4.11",
     "@types/node": "^20.14.2",
     "@types/pg": "^8.11.6",
     "tsx": "^4.16.2",

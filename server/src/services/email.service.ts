@@ -12,7 +12,7 @@ export async function sendVerificationEmail(toEmail: string, token: string): Pro
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto;">
         <h2>Підтвердження реєстрації</h2>
-        <p>Дякуємо за реєстрацію на курсах підготовки до НМТ 2027!</p>
+        <p>Дякуємо за реєстрацію в UpGrade NMT!</p>
         <p>Щоб завершити реєстрацію, підтвердіть вашу електронну пошту:</p>
         <p><a href="${link}" style="display:inline-block;padding:12px 24px;background:#4f46e5;color:#fff;text-decoration:none;border-radius:6px;">Підтвердити email</a></p>
         <p>Або перейдіть за посиланням: <br/>${link}</p>

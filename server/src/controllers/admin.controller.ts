@@ -1,9 +1,22 @@
+import crypto from "crypto";
 import { Request, Response } from "express";
+import { env } from "../config/env";
 import * as coursesRepo from "../repositories/courses.repo";
 import * as topicsRepo from "../repositories/topics.repo";
 import * as materialsRepo from "../repositories/materials.repo";
 import * as purchasesRepo from "../repositories/purchases.repo";
 import * as usersRepo from "../repositories/users.repo";
+import { hashPassword } from "../services/password.service";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function generatePassword(): string {
+  const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+  const bytes = crypto.randomBytes(10);
+  let out = "";
+  for (let i = 0; i < 10; i++) out += alphabet[bytes[i] % alphabet.length];
+  return out;
+}
 
 const MATERIAL_TYPES = new Set(["conspect", "shpargalka", "test", "video", "other"]);
 
@@ -114,6 +127,11 @@ export async function deleteMaterial(req: Request, res: Response) {
   return res.status(204).send();
 }
 
+export async function uploadFile(req: Request, res: Response) {
+  if (!req.file) return res.status(400).json({ error: "NO_FILE" });
+  return res.status(201).json({ url: `${env.serverUrl}/uploads/${req.file.filename}` });
+}
+
 export async function listPurchases(_req: Request, res: Response) {
   const purchases = await purchasesRepo.listAllPurchases();
   return res.json(purchases);
@@ -128,6 +146,36 @@ export async function searchUsers(req: Request, res: Response) {
   return res.json(
     users.map((u) => ({ id: u.id, email: u.email, role: u.role, is_verified: u.is_verified }))
   );
+}
+
+export async function createUser(req: Request, res: Response) {
+  const { email, courseIds } = req.body ?? {};
+  if (typeof email !== "string" || !EMAIL_RE.test(email)) {
+    return res.status(400).json({ error: "INVALID_EMAIL" });
+  }
+
+  const existing = await usersRepo.findUserByEmail(email);
+  if (existing) {
+    return res.status(409).json({ error: "EMAIL_TAKEN" });
+  }
+
+  const password = generatePassword();
+  const passwordHash = await hashPassword(password);
+  const user = await usersRepo.createUser(email, passwordHash);
+  await usersRepo.markUserVerified(user.id);
+
+  const granted: number[] = [];
+  if (Array.isArray(courseIds)) {
+    for (const rawId of courseIds) {
+      const course = await coursesRepo.findCourseById(Number(rawId));
+      if (course) {
+        await purchasesRepo.grantManualAccess(user.id, course.id, course.price_uah);
+        granted.push(course.id);
+      }
+    }
+  }
+
+  return res.status(201).json({ id: user.id, email: user.email, password, granted });
 }
 
 export async function getUserAccess(req: Request, res: Response) {

@@ -13,9 +13,12 @@ export function Navbar() {
   return (
     <header className="navbar">
       <Link to="/" className="navbar-brand">
-        НМТ 2027
+        UpGrade NMT
       </Link>
       <nav className="navbar-links">
+        <Link to="/" state={{ scrollTo: "courses" }}>
+          Курси
+        </Link>
         {user ? (
           <>
             <Link to="/dashboard">Мої курси</Link>
