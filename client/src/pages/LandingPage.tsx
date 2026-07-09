@@ -69,8 +69,12 @@ export function LandingPage() {
 
           <div className="hero-stats">
             <div className="hero-stat">
-              <strong>31</strong>
-              <span>Тема з історії</span>
+              <strong>32</strong>
+              <span>Теми з історії</span>
+            </div>
+            <div className="hero-stat">
+              <strong>37</strong>
+              <span>Тем з української</span>
             </div>
             <div className="hero-stat">
               <strong>4</strong>
