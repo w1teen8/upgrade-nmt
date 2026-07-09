@@ -64,9 +64,8 @@ export function CourseContentPage() {
   }
 
   const activeTopic = course.topics.find((t) => String(t.id) === topicId) ?? course.topics[0];
-  const videoMaterial = activeTopic.materials.find((m) => m.type === "video");
-  const listMaterials = activeTopic.materials.filter((m) => m !== videoMaterial);
-  const embedUrl = videoMaterial ? toEmbedUrl(videoMaterial.url) : null;
+  const videoMaterials = activeTopic.materials.filter((m) => m.type === "video");
+  const listMaterials = activeTopic.materials.filter((m) => m.type !== "video");
 
   function patchMaterial(materialId: number, done: boolean) {
     setCourse((prev) => {
@@ -142,24 +141,30 @@ export function CourseContentPage() {
       <main className="course-main">
         <h1>{activeTopic.title}</h1>
 
-        {embedUrl ? (
-          <div className="video-frame">
-            <iframe
-              src={embedUrl}
-              title={videoMaterial?.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : (
-          videoMaterial && (
-            <p>
-              <a href={videoMaterial.url} target="_blank" rel="noreferrer">
-                {videoMaterial.title}
-              </a>
-            </p>
-          )
-        )}
+        {videoMaterials.map((v) => {
+          const embedUrl = toEmbedUrl(v.url);
+          return (
+            <div key={v.id} className="video-block">
+              {videoMaterials.length > 1 && <h3 className="video-block-title">{v.title}</h3>}
+              {embedUrl ? (
+                <div className="video-frame">
+                  <iframe
+                    src={embedUrl}
+                    title={v.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <p>
+                  <a href={v.url} target="_blank" rel="noreferrer">
+                    {v.title}
+                  </a>
+                </p>
+              )}
+            </div>
+          );
+        })}
 
         <ul className="material-checklist">
           {listMaterials.map((m) => (
@@ -182,7 +187,7 @@ export function CourseContentPage() {
               )}
             </li>
           ))}
-          {listMaterials.length === 0 && !videoMaterial && <li>Матеріали ще не додано.</li>}
+          {listMaterials.length === 0 && videoMaterials.length === 0 && <li>Матеріали ще не додано.</li>}
         </ul>
 
         <button
