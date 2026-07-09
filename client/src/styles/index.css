@@ -228,7 +228,7 @@ p {
 .hero {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(ellipse 120% 100% at 50% -20%, #4a7a38 0%, #2e4a22 55%, var(--ink) 100%);
+  background: radial-gradient(ellipse 120% 100% at 50% -20%, #2e4a22 0%, var(--ink) 55%, #050a05 100%);
   color: #fff;
   padding: 96px 24px 72px;
   text-align: center;
