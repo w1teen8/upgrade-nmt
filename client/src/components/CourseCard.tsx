@@ -16,7 +16,7 @@ export function CourseCard({ course, owned = false }: { course: Course; owned?: 
     <Link to={linkTo} className={`course-card ${subjectClass}`}>
       {isTurbo && <span className="course-card-tag">UpRush</span>}
       <div className="course-card-cover">
-        <img src={`/covers/${course.slug}.jpg`} alt={course.title} loading="lazy" />
+        <img src={`${import.meta.env.BASE_URL}covers/${course.slug}.jpg`} alt={course.title} loading="lazy" />
       </div>
       <h3>{course.title}</h3>
       {!owned && course.description && <p className="course-card-desc">{course.description}</p>}
