@@ -21,7 +21,7 @@ export function CourseCard({ course }: { course: Course }) {
 
   return (
     <Link to={`/courses/${course.slug}`} className={`course-card ${subjectClass}`}>
-      {isTurbo && <span className="course-card-tag">ТурбоБум</span>}
+      {isTurbo && <span className="course-card-tag">UpRush</span>}
       <div className="course-card-icon">{icon}</div>
       <h3>{course.title}</h3>
       {course.description && <p className="course-card-desc">{course.description}</p>}
