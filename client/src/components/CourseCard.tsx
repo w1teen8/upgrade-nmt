@@ -6,25 +6,32 @@ const OLD_PRICE: Record<string, number> = {
   turbo: 400,
 };
 
-export function CourseCard({ course }: { course: Course }) {
+export function CourseCard({ course, owned = false }: { course: Course; owned?: boolean }) {
   const isTurbo = course.course_type === "turbo";
   const subjectClass = course.subject === "ukrainian" ? "subject-ukrainian" : "subject-history";
   const oldPrice = OLD_PRICE[course.course_type];
+  const linkTo = owned ? `/dashboard/courses/${course.slug}` : `/courses/${course.slug}`;
 
   return (
-    <Link to={`/courses/${course.slug}`} className={`course-card ${subjectClass}`}>
+    <Link to={linkTo} className={`course-card ${subjectClass}`}>
       {isTurbo && <span className="course-card-tag">UpRush</span>}
       <div className="course-card-cover">
         <img src={`/covers/${course.slug}.jpg`} alt={course.title} loading="lazy" />
       </div>
       <h3>{course.title}</h3>
-      {course.description && <p className="course-card-desc">{course.description}</p>}
+      {!owned && course.description && <p className="course-card-desc">{course.description}</p>}
       <div className="course-card-footer">
-        <span className="course-card-price">
-          {oldPrice && <span className="price-old">{oldPrice} грн</span>}
-          {Number(course.price_uah)} грн
-        </span>
-        <span className="course-card-arrow">Детальніше →</span>
+        {owned ? (
+          <span className="course-card-arrow">Перейти до курсу →</span>
+        ) : (
+          <>
+            <span className="course-card-price">
+              {oldPrice && <span className="price-old">{oldPrice} грн</span>}
+              {Number(course.price_uah)} грн
+            </span>
+            <span className="course-card-arrow">Детальніше →</span>
+          </>
+        )}
       </div>
     </Link>
   );
