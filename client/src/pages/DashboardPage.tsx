@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { myCourses, Course } from "../api/courses.api";
+import { CourseCard } from "../components/CourseCard";
 
 export function DashboardPage() {
   const [courses, setCourses] = useState<Course[] | null>(null);
@@ -20,9 +21,7 @@ export function DashboardPage() {
       )}
       <div className="course-grid">
         {courses?.map((c) => (
-          <Link key={c.id} to={`/dashboard/courses/${c.slug}`} className="course-card">
-            <h3>{c.title}</h3>
-          </Link>
+          <CourseCard key={c.id} course={c} owned />
         ))}
       </div>
     </div>
