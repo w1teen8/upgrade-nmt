@@ -407,6 +407,8 @@ p {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
   margin-top: 8px;
   padding-top: 16px;
   border-top: 1px solid var(--border);
@@ -416,6 +418,7 @@ p {
   color: var(--ink);
   font-weight: 800;
   font-size: 18px;
+  white-space: nowrap;
 }
 
 .price-old {

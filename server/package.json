@@ -9,6 +9,7 @@
     "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
     "seed:history": "tsx src/scripts/seed-history-topics.ts",
+    "seed:ukrainian": "tsx src/scripts/seed-ukrainian-topics.ts",
     "import:materials": "tsx src/scripts/import-materials-folder.ts"
   },
   "dependencies": {

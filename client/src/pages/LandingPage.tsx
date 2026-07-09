@@ -105,7 +105,6 @@ export function LandingPage() {
         <div className="section-title">
           <span className="eyebrow">Курси</span>
           <h2>Обери свій курс</h2>
-          <p>Повний курс охоплює всю програму, ТурбоБум — швидке повторення перед іспитом.</p>
         </div>
 
         {error && <p className="form-error">{error}</p>}
