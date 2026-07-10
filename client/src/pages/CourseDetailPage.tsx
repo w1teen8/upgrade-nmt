@@ -14,6 +14,7 @@ export function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const { user } = useAuth();
   const [course, setCourse] = useState<(Course & { topics: Topic[] }) | null>(null);
+  const [displayTopics, setDisplayTopics] = useState<Topic[]>([]);
   const [purchased, setPurchased] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,6 +24,17 @@ export function CourseDetailPage() {
       .then(setCourse)
       .catch(() => setError("Курс не знайдено."));
   }, [slug]);
+
+  useEffect(() => {
+    if (!course) return;
+    if (course.course_type === "turbo") {
+      getCourse(`${course.subject}-full`)
+        .then((full) => setDisplayTopics(full.topics))
+        .catch(() => setDisplayTopics(course.topics));
+    } else {
+      setDisplayTopics(course.topics);
+    }
+  }, [course]);
 
   useEffect(() => {
     if (!user || !course) return;
@@ -45,11 +57,11 @@ export function CourseDetailPage() {
       </p>
       <p className="course-description">{course.description}</p>
 
-      {course.topics.length > 0 && (
+      {displayTopics.length > 0 && (
         <div className="topic-list">
           <h2>Теми курсу</h2>
           <ol>
-            {course.topics.map((t) => (
+            {displayTopics.map((t) => (
               <li key={t.id}>{t.title}</li>
             ))}
           </ol>
