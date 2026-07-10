@@ -22,6 +22,16 @@ export function listCourses() {
   return apiFetch<Course[]>("/api/admin/courses");
 }
 
+export interface VisitStats {
+  total: number;
+  unique_visitors: number;
+  today: number;
+}
+
+export function getVisitStats() {
+  return apiFetch<VisitStats>("/api/admin/visits");
+}
+
 export function updateCourse(id: number, fields: Partial<Course>) {
   return apiFetch<Course>(`/api/admin/courses/${id}`, { method: "PUT", body: fields });
 }

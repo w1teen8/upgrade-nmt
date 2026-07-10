@@ -9,6 +9,7 @@ import paymentsRoutes from "./routes/payments.routes";
 import adminRoutes from "./routes/admin.routes";
 import meRoutes from "./routes/me.routes";
 import progressRoutes from "./routes/progress.routes";
+import visitsRoutes from "./routes/visits.routes";
 
 export const app = express();
 
@@ -31,5 +32,6 @@ app.use("/api/payments", paymentsRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/me", meRoutes);
 app.use("/api", progressRoutes);
+app.use("/api/visits", visitsRoutes);
 
 app.use(errorHandler);
