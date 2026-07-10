@@ -10,7 +10,6 @@ router.use(requireAuth, requireAdmin);
 router.post("/upload", upload.single("file"), asyncHandler(adminController.uploadFile));
 
 router.get("/courses", asyncHandler(adminController.listCourses));
-router.get("/visits", asyncHandler(adminController.getVisitStats));
 router.put("/courses/:id", asyncHandler(adminController.updateCourse));
 
 router.get("/courses/:courseId/topics", asyncHandler(adminController.listTopics));
