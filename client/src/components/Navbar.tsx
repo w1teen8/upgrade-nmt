@@ -27,6 +27,7 @@ export function Navbar() {
               <>
                 <Link to="/admin/courses">Адмін</Link>
                 <Link to="/admin/users">Користувачі</Link>
+                <Link to="/admin/visits">Відвідування</Link>
               </>
             )}
             <button className="link-button" onClick={handleLogout}>

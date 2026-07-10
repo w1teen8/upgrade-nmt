@@ -707,6 +707,26 @@ p {
   margin-bottom: 12px;
 }
 
+.admin-visit-stats {
+  justify-content: flex-start;
+  gap: 48px;
+  margin-top: 0;
+  padding: 28px 32px;
+  border-top: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-visit-stats .hero-stat strong {
+  color: var(--ink);
+}
+
+.admin-visit-stats .hero-stat span {
+  color: var(--muted);
+}
+
 /* ---------- Admin ---------- */
 
 .admin-table {
