@@ -5,6 +5,7 @@ import { Footer } from "./components/Footer";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 import { LandingPage } from "./pages/LandingPage";
 import { CourseDetailPage } from "./pages/CourseDetailPage";
+import { ReferralPage } from "./pages/ReferralPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { LoginPage } from "./pages/LoginPage";
 import { VerifyEmailPage } from "./pages/VerifyEmailPage";
@@ -24,6 +25,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/courses/:slug" element={<CourseDetailPage />} />
+          <Route path="/referral" element={<ReferralPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/verify-email" element={<VerifyEmailPage />} />

@@ -24,6 +24,7 @@ export function Footer() {
             </Link>
             <Link to="/register">Реєстрація</Link>
             <Link to="/login">Увійти</Link>
+            <Link to="/referral">Реферальна система</Link>
           </div>
           <div className="footer-col">
             <h4>Кабінет</h4>

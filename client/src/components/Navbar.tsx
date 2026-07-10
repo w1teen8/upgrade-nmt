@@ -19,6 +19,7 @@ export function Navbar() {
         <Link to="/" state={{ scrollTo: "courses" }}>
           Курси
         </Link>
+        <Link to="/referral">Реферальна система</Link>
         {user ? (
           <>
             <Link to="/dashboard">Мої курси</Link>
