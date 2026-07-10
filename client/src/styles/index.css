@@ -228,10 +228,11 @@ p {
 .hero {
   position: relative;
   overflow: hidden;
-  background: radial-gradient(ellipse 120% 100% at 50% -20%, #2e4a22 0%, var(--ink) 55%, #050a05 100%);
-  color: #fff;
+  background: linear-gradient(180deg, #f5faee 0%, var(--bg) 100%);
+  color: var(--ink);
   padding: 96px 24px 72px;
   text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 
 .hero::before,
@@ -240,7 +241,7 @@ p {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(60px);
+  filter: blur(70px);
 }
 
 .hero::before {
@@ -248,7 +249,7 @@ p {
   left: -12%;
   width: 55%;
   padding-bottom: 55%;
-  background: radial-gradient(circle, rgba(163, 206, 116, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(163, 206, 116, 0.4) 0%, transparent 70%);
 }
 
 .hero::after {
@@ -256,7 +257,7 @@ p {
   right: -14%;
   width: 60%;
   padding-bottom: 60%;
-  background: radial-gradient(circle, rgba(95, 154, 62, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(95, 154, 62, 0.22) 0%, transparent 70%);
 }
 
 .hero-inner {
@@ -265,19 +266,14 @@ p {
   margin: 0 auto;
 }
 
-.hero .eyebrow {
-  background: rgba(255, 255, 255, 0.1);
-  color: #d9f0bf;
-}
-
 .hero h1 {
-  color: #fff;
+  color: var(--ink);
   font-size: 3.1rem;
   margin-bottom: 18px;
 }
 
 .hero p {
-  color: #cbd5e1;
+  color: var(--muted);
   font-size: 1.15rem;
   max-width: 560px;
   margin: 0 auto 32px;
@@ -291,6 +287,17 @@ p {
   flex-wrap: wrap;
 }
 
+.hero .btn-outline {
+  background: var(--surface);
+  border-color: var(--border);
+  color: var(--ink-soft);
+}
+
+.hero .btn-outline:hover {
+  border-color: var(--primary);
+  color: var(--primary-dark);
+}
+
 .hero-stats {
   position: relative;
   display: flex;
@@ -299,7 +306,7 @@ p {
   flex-wrap: wrap;
   margin-top: 64px;
   padding-top: 32px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--border);
 }
 
 .hero-stat {
@@ -310,12 +317,12 @@ p {
   display: block;
   font-size: 1.9rem;
   font-weight: 800;
-  color: #fff;
+  color: var(--ink);
 }
 
 .hero-stat span {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
