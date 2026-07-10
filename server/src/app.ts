@@ -10,6 +10,7 @@ import adminRoutes from "./routes/admin.routes";
 import meRoutes from "./routes/me.routes";
 import progressRoutes from "./routes/progress.routes";
 import visitsRoutes from "./routes/visits.routes";
+import statsRoutes from "./routes/stats.routes";
 
 export const app = express();
 
@@ -33,5 +34,6 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/me", meRoutes);
 app.use("/api", progressRoutes);
 app.use("/api/visits", visitsRoutes);
+app.use("/api/stats", statsRoutes);
 
 app.use(errorHandler);

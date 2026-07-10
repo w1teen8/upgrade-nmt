@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { listCourses, Course } from "../api/courses.api";
+import { getPublicStats } from "../api/stats.api";
 import { CourseCard } from "../components/CourseCard";
 
 function scrollToId(id: string) {
@@ -33,12 +34,19 @@ const FEATURES = [
 export function LandingPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [registeredUsers, setRegisteredUsers] = useState<number | null>(null);
   const location = useLocation();
 
   useEffect(() => {
     listCourses()
       .then(setCourses)
       .catch(() => setError("Не вдалося завантажити курси."));
+  }, []);
+
+  useEffect(() => {
+    getPublicStats()
+      .then((s) => setRegisteredUsers(s.registeredUsers))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -84,6 +92,12 @@ export function LandingPage() {
               <strong>2027</strong>
               <span>Рік НМТ</span>
             </div>
+            {registeredUsers !== null && (
+              <div className="hero-stat">
+                <strong>{registeredUsers}</strong>
+                <span>Зареєстровано учнів</span>
+              </div>
+            )}
           </div>
         </div>
       </section>

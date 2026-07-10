@@ -25,6 +25,11 @@ export async function markUserVerified(userId: number): Promise<void> {
   await pool.query(`UPDATE users SET is_verified = TRUE WHERE id = $1`, [userId]);
 }
 
+export async function countUsers(): Promise<number> {
+  const { rows } = await pool.query<{ count: number }>(`SELECT COUNT(*)::int AS count FROM users`);
+  return rows[0].count;
+}
+
 export async function searchUsersByEmail(query: string): Promise<User[]> {
   const { rows } = await pool.query<User>(
     `SELECT * FROM users WHERE email ILIKE $1 ORDER BY created_at DESC LIMIT 20`,
