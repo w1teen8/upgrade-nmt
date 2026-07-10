@@ -1,6 +1,16 @@
 import { Link } from "react-router-dom";
 import { Course } from "../api/courses.api";
 
+const SUBJECT_LABEL: Record<string, string> = {
+  history: "Історія України",
+  ukrainian: "Українська мова",
+};
+
+const SUBJECT_ICON: Record<string, string> = {
+  history: "🏛️",
+  ukrainian: "🖋️",
+};
+
 const OLD_PRICE: Record<string, number> = {
   full: 1500,
   turbo: 400,
@@ -15,10 +25,11 @@ export function CourseCard({ course, owned = false }: { course: Course; owned?: 
   return (
     <Link to={linkTo} className={`course-card ${subjectClass}`}>
       {isTurbo && <span className="course-card-tag">UpRush</span>}
-      <div className="course-card-cover">
-        <img src={`${import.meta.env.BASE_URL}covers/${course.slug}.jpg`} alt={course.title} loading="lazy" />
-      </div>
+      <span className="course-card-badge">
+        {SUBJECT_ICON[course.subject]} {SUBJECT_LABEL[course.subject]}
+      </span>
       <h3>{course.title}</h3>
+      {course.description && <p className="course-card-desc">{course.description}</p>}
       <div className="course-card-footer">
         {owned ? (
           <span className="course-card-arrow">Перейти до курсу →</span>
