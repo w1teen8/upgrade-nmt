@@ -6,7 +6,6 @@ import * as topicsRepo from "../repositories/topics.repo";
 import * as materialsRepo from "../repositories/materials.repo";
 import * as purchasesRepo from "../repositories/purchases.repo";
 import * as usersRepo from "../repositories/users.repo";
-import * as visitsRepo from "../repositories/visits.repo";
 import { hashPassword } from "../services/password.service";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,11 +23,6 @@ const MATERIAL_TYPES = new Set(["conspect", "shpargalka", "test", "video", "othe
 export async function listCourses(_req: Request, res: Response) {
   const courses = await coursesRepo.listAllCourses();
   return res.json(courses);
-}
-
-export async function getVisitStats(_req: Request, res: Response) {
-  const stats = await visitsRepo.getVisitStats();
-  return res.json(stats);
 }
 
 export async function updateCourse(req: Request, res: Response) {
