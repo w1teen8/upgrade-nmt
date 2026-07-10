@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { listCourses, Course } from "../api/courses.api";
 import { getPublicStats } from "../api/stats.api";
 import { CourseCard } from "../components/CourseCard";
+import { CountUp } from "../components/CountUp";
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -77,24 +78,24 @@ export function LandingPage() {
 
           <div className="hero-stats">
             <div className="hero-stat">
-              <strong>32</strong>
+              <strong><CountUp value={32} /></strong>
               <span>Теми з історії</span>
             </div>
             <div className="hero-stat">
-              <strong>37</strong>
+              <strong><CountUp value={37} /></strong>
               <span>Тем з української</span>
             </div>
             <div className="hero-stat">
-              <strong>4</strong>
+              <strong><CountUp value={4} /></strong>
               <span>Формати матеріалів</span>
             </div>
             <div className="hero-stat">
-              <strong>2027</strong>
+              <strong><CountUp value={2027} /></strong>
               <span>Рік НМТ</span>
             </div>
             {registeredUsers !== null && (
               <div className="hero-stat">
-                <strong>{registeredUsers}</strong>
+                <strong><CountUp value={registeredUsers} /></strong>
                 <span>Зареєстровано учнів</span>
               </div>
             )}
