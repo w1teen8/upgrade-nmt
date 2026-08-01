@@ -32,7 +32,7 @@ jobs:
         working-directory: client
         run: npm run build
         env:
-          VITE_API_URL: https://nmt-courses-production.up.railway.app
+          VITE_API_URL: https://upgrade-nmt.onrender.com
           VITE_BASE_PATH: /upgrade-nmt/
 
       - uses: actions/configure-pages@v5
