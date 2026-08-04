@@ -2,6 +2,7 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
+import { ReportIssueButton } from "./components/ReportIssueButton";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 import { LandingPage } from "./pages/LandingPage";
 import { CourseDetailPage } from "./pages/CourseDetailPage";
@@ -48,6 +49,7 @@ export default function App() {
         </Routes>
         </main>
         <Footer />
+        <ReportIssueButton />
       </AuthProvider>
     </HashRouter>
   );
