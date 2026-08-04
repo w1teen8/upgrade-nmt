@@ -1,6 +1,6 @@
 import crypto from "crypto";
 import { Request, Response } from "express";
-import { env } from "../config/env";
+import { uploadToR2 } from "../lib/r2";
 import * as coursesRepo from "../repositories/courses.repo";
 import * as topicsRepo from "../repositories/topics.repo";
 import * as materialsRepo from "../repositories/materials.repo";
@@ -129,7 +129,10 @@ export async function deleteMaterial(req: Request, res: Response) {
 
 export async function uploadFile(req: Request, res: Response) {
   if (!req.file) return res.status(400).json({ error: "NO_FILE" });
-  return res.status(201).json({ url: `${env.serverUrl}/uploads/${req.file.filename}` });
+  const safeName = req.file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_");
+  const key = `admin-uploads/${Date.now()}-${safeName}`;
+  const url = await uploadToR2(key, req.file.buffer, safeName);
+  return res.status(201).json({ url });
 }
 
 export async function listPurchases(_req: Request, res: Response) {

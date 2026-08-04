@@ -20,4 +20,9 @@ export const env = {
   appUrl: required("APP_URL"),
   serverUrl: required("SERVER_URL"),
   corsOrigin: required("CORS_ORIGIN"),
+  r2AccountId: required("R2_ACCOUNT_ID"),
+  r2AccessKeyId: required("R2_ACCESS_KEY_ID"),
+  r2SecretAccessKey: required("R2_SECRET_ACCESS_KEY"),
+  r2Bucket: required("R2_BUCKET"),
+  r2PublicUrl: required("R2_PUBLIC_URL"),
 };
