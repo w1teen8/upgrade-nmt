@@ -1058,3 +1058,46 @@ p {
     padding: 20px;
   }
 }
+
+.report-issue-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.report-issue-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -8px rgba(15, 23, 42, 0.35);
+}
+
+.report-issue-btn svg {
+  flex-shrink: 0;
+}
+
+.report-issue-btn span {
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .report-issue-btn span {
+    display: none;
+  }
+
+  .report-issue-btn {
+    padding: 14px;
+  }
+}
