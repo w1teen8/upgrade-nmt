@@ -77,6 +77,46 @@ export function CheckBadgeIcon({ className }: IconProps) {
   );
 }
 
+export function FlameIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M12 2.5c1 3-3 4.5-3 8a3 3 0 0 0 6 0c1 1 1.5 2.3 1.5 3.5a4.5 4.5 0 0 1-9 0c0-4.5 3-6 4.5-11.5Z" />
+    </svg>
+  );
+}
+
+export function TargetIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <circle cx="12" cy="12" r="1" fill="currentColor" />
+    </svg>
+  );
+}
+
+export function TrophyIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M7 4h10v4a5 5 0 0 1-10 0V4Z" />
+      <path d="M7 5H4a3 3 0 0 0 3 5" />
+      <path d="M17 5h3a3 3 0 0 1-3 5" />
+      <path d="M12 13v3" />
+      <path d="M9 20h6" />
+      <path d="M9.5 16.5h5l.5 3.5H9l.5-3.5Z" />
+    </svg>
+  );
+}
+
+export function ArrowRightIcon({ className }: IconProps) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M4 12h16" />
+      <path d="M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
 export function GiftIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className} aria-hidden="true">

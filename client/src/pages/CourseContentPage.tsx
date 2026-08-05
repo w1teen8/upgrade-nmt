@@ -9,6 +9,8 @@ import {
   TopicWithMaterials,
 } from "../api/courses.api";
 import { ApiError } from "../api/client";
+import { Celebration } from "../components/Celebration";
+import { recordActivityToday } from "../lib/streak";
 
 const MATERIAL_LABELS: Record<string, string> = {
   conspect: "Конспект",
@@ -33,6 +35,8 @@ export function CourseContentPage() {
   const navigate = useNavigate();
   const [course, setCourse] = useState<(Course & { topics: TopicWithMaterials[] }) | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [justChecked, setJustChecked] = useState<number | null>(null);
+  const [showCelebration, setShowCelebration] = useState(false);
 
   useEffect(() => {
     if (!slug) return;
@@ -48,7 +52,19 @@ export function CourseContentPage() {
   }, [slug]);
 
   if (error) return <div className="page"><p className="form-error">{error}</p></div>;
-  if (!course) return <div className="page-loading">Завантаження...</div>;
+  if (!course) {
+    return (
+      <div className="course-content-layout">
+        <div className="skeleton skeleton-card" style={{ height: 400 }} />
+        <div>
+          <div className="skeleton skeleton-line" style={{ height: 36, width: "50%", marginBottom: 24 }} />
+          <div className="skeleton skeleton-card" style={{ height: 240, marginBottom: 20 }} />
+          <div className="skeleton skeleton-line" />
+          <div className="skeleton skeleton-line" style={{ width: "80%" }} />
+        </div>
+      </div>
+    );
+  }
 
   if (course.topics.length === 0) {
     return (
@@ -93,6 +109,11 @@ export function CourseContentPage() {
   async function toggleMaterial(m: Material) {
     const next = !m.done;
     patchMaterial(m.id, next);
+    if (next) {
+      setJustChecked(m.id);
+      recordActivityToday();
+      setTimeout(() => setJustChecked((cur) => (cur === m.id ? null : cur)), 500);
+    }
     try {
       await setMaterialDone(m.id, next);
     } catch {
@@ -103,12 +124,19 @@ export function CourseContentPage() {
   async function toggleTopic() {
     const next = !activeTopic.completed;
     patchTopic(activeTopic.id, next);
+    if (next) {
+      setShowCelebration(true);
+      recordActivityToday();
+    }
     try {
       await setTopicCompleted(activeTopic.id, next);
     } catch {
       patchTopic(activeTopic.id, !next);
     }
   }
+
+  const completedCount = course.topics.filter((t) => t.completed).length;
+  const progressPct = Math.round((completedCount / course.topics.length) * 100);
 
   return (
     <div className="course-content-layout">
@@ -171,7 +199,9 @@ export function CourseContentPage() {
             <li key={m.id} className={m.done ? "done" : ""}>
               {m.type === "test" ? (
                 <label>
-                  <input type="checkbox" checked={!!m.done} onChange={() => toggleMaterial(m)} />
+                  <span className={`check-pop ${justChecked === m.id ? "just-checked" : ""}`}>
+                    <input type="checkbox" checked={!!m.done} onChange={() => toggleMaterial(m)} />
+                  </span>
                   <span className="material-type">{MATERIAL_LABELS[m.type] ?? m.type}:</span>{" "}
                   <a href={m.url} target="_blank" rel="noreferrer">
                     {m.title}
@@ -198,6 +228,14 @@ export function CourseContentPage() {
           {activeTopic.completed ? "✓ Тему завершено" : "Позначити тему завершеною"}
         </button>
       </main>
+
+      {showCelebration && (
+        <Celebration
+          title="Тему завершено!"
+          message={`Прогрес курсу: ${completedCount} з ${course.topics.length} тем (${progressPct}%).`}
+          onClose={() => setShowCelebration(false)}
+        />
+      )}
     </div>
   );
 }

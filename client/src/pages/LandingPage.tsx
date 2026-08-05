@@ -5,6 +5,7 @@ import { getPublicStats } from "../api/stats.api";
 import { CourseCard } from "../components/CourseCard";
 import { CountUp } from "../components/CountUp";
 import { Reveal } from "../components/Reveal";
+import { SkeletonGrid } from "../components/Skeleton";
 import { VideoIcon, NotesIcon, CheckBadgeIcon, GiftIcon } from "../components/icons";
 
 function scrollToId(id: string) {
@@ -36,6 +37,7 @@ const FEATURES = [
 
 export function LandingPage() {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [coursesLoading, setCoursesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [registeredUsers, setRegisteredUsers] = useState<number | null>(null);
   const location = useLocation();
@@ -43,7 +45,8 @@ export function LandingPage() {
   useEffect(() => {
     listCourses()
       .then(setCourses)
-      .catch(() => setError("Не вдалося завантажити курси."));
+      .catch(() => setError("Не вдалося завантажити курси."))
+      .finally(() => setCoursesLoading(false));
   }, []);
 
   useEffect(() => {
@@ -132,13 +135,17 @@ export function LandingPage() {
 
         {error && <p className="form-error">{error}</p>}
 
-        <div className="course-grid">
-          {courses.map((c, i) => (
-            <Reveal key={c.id} delay={i * 80}>
-              <CourseCard course={c} />
-            </Reveal>
-          ))}
-        </div>
+        {coursesLoading ? (
+          <SkeletonGrid count={4} />
+        ) : (
+          <div className="course-grid">
+            {courses.map((c, i) => (
+              <Reveal key={c.id} delay={i * 80}>
+                <CourseCard course={c} />
+              </Reveal>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
