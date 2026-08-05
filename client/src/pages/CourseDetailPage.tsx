@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCourse, myCourses, Course, Topic } from "../api/courses.api";
 import { useAuth } from "../context/AuthContext";
-import { SkeletonLine, SkeletonCard } from "../components/Skeleton";
 
 const TELEGRAM_CONTACT = "https://t.me/w1teen0";
 
@@ -45,17 +44,7 @@ export function CourseDetailPage() {
   }, [user, course]);
 
   if (error) return <div className="page"><p className="form-error">{error}</p></div>;
-  if (!course) {
-    return (
-      <div className="page course-detail-page">
-        <SkeletonLine width="60%" />
-        <div style={{ height: 12 }} />
-        <SkeletonLine width="30%" />
-        <div style={{ height: 24 }} />
-        <SkeletonCard />
-      </div>
-    );
-  }
+  if (!course) return <div className="page">Завантаження...</div>;
 
   return (
     <div className="page course-detail-page">
