@@ -4,6 +4,8 @@ import { listCourses, Course } from "../api/courses.api";
 import { getPublicStats } from "../api/stats.api";
 import { CourseCard } from "../components/CourseCard";
 import { CountUp } from "../components/CountUp";
+import { Reveal } from "../components/Reveal";
+import { VideoIcon, NotesIcon, CheckBadgeIcon, GiftIcon } from "../components/icons";
 
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -11,22 +13,22 @@ function scrollToId(id: string) {
 
 const FEATURES = [
   {
-    icon: "🎥",
+    icon: <VideoIcon />,
     title: "Відеолекції по кожній темі",
     desc: "Розбір усіх тем програми НМТ у форматі коротких, структурованих відео.",
   },
   {
-    icon: "📝",
+    icon: <NotesIcon />,
     title: "Конспекти та шпаргалки",
     desc: "Стислі матеріали для повторення перед тестами й самим НМТ.",
   },
   {
-    icon: "✅",
+    icon: <CheckBadgeIcon />,
     title: "Тести після кожної теми",
     desc: "Mix- та Final-тести — перевір, наскільки добре засвоїв матеріал.",
   },
   {
-    icon: "🎁",
+    icon: <GiftIcon />,
     title: "Бонуси в кожному курсі",
     desc: "Додаткові матеріали для повторення — включені безкоштовно до вартості курсу.",
   },
@@ -104,33 +106,37 @@ export function LandingPage() {
       </section>
 
       <section id="features" className="section">
-        <div className="section-title">
+        <Reveal className="section-title">
           <span className="eyebrow">Що всередині</span>
           <h2>Все для підготовки в одному кабінеті</h2>
           <p>Жодних розкиданих файлів і посилань — тільки структуровані матеріали по темах.</p>
-        </div>
+        </Reveal>
         <div className="feature-grid">
-          {FEATURES.map((f) => (
-            <div className="feature" key={f.title}>
-              <div className="feature-icon">{f.icon}</div>
-              <h3>{f.title}</h3>
-              <p>{f.desc}</p>
-            </div>
+          {FEATURES.map((f, i) => (
+            <Reveal key={f.title} delay={i * 90}>
+              <div className="feature">
+                <div className="feature-icon">{f.icon}</div>
+                <h3>{f.title}</h3>
+                <p>{f.desc}</p>
+              </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section id="courses" className="section section-alt">
-        <div className="section-title">
+        <Reveal className="section-title">
           <span className="eyebrow">Курси</span>
           <h2>Обери свій курс</h2>
-        </div>
+        </Reveal>
 
         {error && <p className="form-error">{error}</p>}
 
         <div className="course-grid">
-          {courses.map((c) => (
-            <CourseCard key={c.id} course={c} />
+          {courses.map((c, i) => (
+            <Reveal key={c.id} delay={i * 80}>
+              <CourseCard course={c} />
+            </Reveal>
           ))}
         </div>
       </section>

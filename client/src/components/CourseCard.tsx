@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
 import { Course } from "../api/courses.api";
+import { HistoryIcon, QuillIcon, BoltIcon, BookIcon } from "./icons";
 
-const ICONS: Record<string, string> = {
-  history: "🏛️",
-  ukrainian: "🖋️",
-  "history-turbo": "⚡",
-  "ukrainian-turbo": "⚡",
+const ICONS: Record<string, JSX.Element> = {
+  history: <HistoryIcon />,
+  ukrainian: <QuillIcon />,
+  "history-turbo": <BoltIcon />,
+  "ukrainian-turbo": <BoltIcon />,
 };
 
 const OLD_PRICE: Record<string, number> = {
@@ -14,7 +15,7 @@ const OLD_PRICE: Record<string, number> = {
 };
 
 export function CourseCard({ course, owned = false }: { course: Course; owned?: boolean }) {
-  const icon = ICONS[course.icon ?? ""] ?? "📘";
+  const icon = ICONS[course.icon ?? ""] ?? <BookIcon />;
   const isTurbo = course.course_type === "turbo";
   const subjectClass = course.subject === "ukrainian" ? "subject-ukrainian" : "subject-history";
   const oldPrice = OLD_PRICE[course.course_type];
