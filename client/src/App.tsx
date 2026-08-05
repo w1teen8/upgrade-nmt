@@ -1,4 +1,4 @@
-import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
@@ -17,46 +17,36 @@ import { AdminTopicsPage } from "./pages/admin/AdminTopicsPage";
 import { AdminMaterialsPage } from "./pages/admin/AdminMaterialsPage";
 import { AdminUsersPage } from "./pages/admin/AdminUsersPage";
 
-function AppRoutes() {
-  const location = useLocation();
-
-  return (
-    <div className="page-transition" key={location.pathname}>
-      <Routes location={location}>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/courses/:slug" element={<CourseDetailPage />} />
-        <Route path="/referral" element={<ReferralPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/verify-email" element={<VerifyEmailPage />} />
-
-        <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/dashboard/courses/:slug" element={<CourseContentPage />} />
-          <Route path="/dashboard/courses/:slug/topics/:topicId" element={<CourseContentPage />} />
-        </Route>
-
-        <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<Navigate to="/admin/courses" replace />} />
-          <Route path="/admin/courses" element={<AdminCoursesPage />} />
-          <Route path="/admin/courses/:id/topics" element={<AdminTopicsPage />} />
-          <Route path="/admin/topics/:id/materials" element={<AdminMaterialsPage />} />
-          <Route path="/admin/users" element={<AdminUsersPage />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </div>
-  );
-}
-
 export default function App() {
   return (
     <HashRouter>
       <AuthProvider>
         <Navbar />
         <main className="app-main">
-          <AppRoutes />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/courses/:slug" element={<CourseDetailPage />} />
+          <Route path="/referral" element={<ReferralPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/dashboard/courses/:slug" element={<CourseContentPage />} />
+            <Route path="/dashboard/courses/:slug/topics/:topicId" element={<CourseContentPage />} />
+          </Route>
+
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<Navigate to="/admin/courses" replace />} />
+            <Route path="/admin/courses" element={<AdminCoursesPage />} />
+            <Route path="/admin/courses/:id/topics" element={<AdminTopicsPage />} />
+            <Route path="/admin/topics/:id/materials" element={<AdminMaterialsPage />} />
+            <Route path="/admin/users" element={<AdminUsersPage />} />
+          </Route>
+
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
         </main>
         <Footer />
         <ReportIssueButton />
