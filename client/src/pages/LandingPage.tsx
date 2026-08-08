@@ -43,20 +43,20 @@ const TESTIMONIALS = [
       "Матеріали структуровані по темах, тож не довелось збирати конспекти по різних чатах і папках — усе в одному кабінеті.",
     name: "Марія",
     role: "курс «Історія України»",
-    color: "linear-gradient(135deg, #0d9488, #2dd4bf)",
+    color: "linear-gradient(135deg, #16a34a, #34d17c)",
   },
   {
     quote:
       "Подобається, що можна проходити теми у своєму темпі й одразу перевіряти себе тестом після кожної.",
     name: "Олег",
     role: "курс «Українська мова»",
-    color: "linear-gradient(135deg, #ea580c, #fb923c)",
+    color: "linear-gradient(135deg, #0f7d3a, #22c55e)",
   },
   {
     quote: "UpRush підійшов для швидкого повторення перед НМТ — тільки суть, без зайвого.",
     name: "Софія",
     role: "UpRush: Історія України",
-    color: "linear-gradient(135deg, #0f766e, #ea580c)",
+    color: "linear-gradient(135deg, #0b6430, #4ade80)",
   },
 ];
 
@@ -113,7 +113,6 @@ export function LandingPage() {
   return (
     <div className="landing-page">
       <section className="hero noise">
-        <div className="hero-grid" aria-hidden="true" />
         <div className="hero-glow hero-glow-a" aria-hidden="true" />
         <div className="hero-glow hero-glow-b" aria-hidden="true" />
         <div className="hero-glow hero-glow-c" aria-hidden="true" />
@@ -142,7 +141,7 @@ export function LandingPage() {
             <Magnetic>
               <button
                 type="button"
-                className="btn btn-ghost-dark btn-lg"
+                className="btn btn-outline btn-lg"
                 onClick={() => scrollToId("features")}
               >
                 Дізнатися більше
@@ -205,8 +204,8 @@ export function LandingPage() {
             <div className="editorial-panel noise">
               <div className="editorial-panel-glow" aria-hidden="true" />
               <div className="editorial-panel-head">
-                <h3>Прогрес по курсах</h3>
-                <span className="editorial-panel-badge">Кабінет учня</span>
+                <h3>Скільки тем у кожному курсі</h3>
+                <span className="editorial-panel-badge">Повна програма НМТ</span>
               </div>
 
               <div className="progress-row">
@@ -215,7 +214,7 @@ export function LandingPage() {
                   <b>32 теми</b>
                 </div>
                 <div className="progress-track">
-                  <div className="progress-fill" style={{ width: "78%" }} />
+                  <div className="progress-fill" style={{ width: "87%" }} />
                 </div>
               </div>
 
@@ -225,7 +224,7 @@ export function LandingPage() {
                   <b>37 тем</b>
                 </div>
                 <div className="progress-track">
-                  <div className="progress-fill" style={{ width: "54%" }} />
+                  <div className="progress-fill" style={{ width: "100%" }} />
                 </div>
               </div>
 
