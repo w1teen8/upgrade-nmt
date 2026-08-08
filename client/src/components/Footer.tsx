@@ -8,6 +8,7 @@ export function Footer() {
       <div className="footer-inner">
         <div>
           <Link to="/" className="footer-brand">
+            <span className="footer-brand-mark" aria-hidden="true" />
             UpGrade NMT
           </Link>
           <p className="footer-tagline">
