@@ -33,7 +33,7 @@ export function Cursor() {
       if (target?.closest(HOVER_SELECTOR)) {
         el!.classList.add("is-hovering");
       }
-      const onDark = target?.closest(".hero, .final-cta, .editorial-panel, .site-footer");
+      const onDark = target?.closest(".final-cta, .editorial-panel, .site-footer");
       el!.classList.toggle("on-dark", !!onDark);
     }
 
