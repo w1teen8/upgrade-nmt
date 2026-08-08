@@ -214,7 +214,7 @@ export function LandingPage() {
                   <b>32 теми</b>
                 </div>
                 <div className="progress-track">
-                  <div className="progress-fill" style={{ width: "87%" }} />
+                  <div className="progress-fill" style={{ "--fill": 0.87 } as React.CSSProperties} />
                 </div>
               </div>
 
@@ -224,7 +224,7 @@ export function LandingPage() {
                   <b>37 тем</b>
                 </div>
                 <div className="progress-track">
-                  <div className="progress-fill" style={{ width: "100%" }} />
+                  <div className="progress-fill" style={{ "--fill": 1 } as React.CSSProperties} />
                 </div>
               </div>
 
