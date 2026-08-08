@@ -2,6 +2,7 @@ import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
+import { Cursor } from "./components/Cursor";
 import { ReportIssueButton } from "./components/ReportIssueButton";
 import { ProtectedRoute, AdminRoute } from "./components/ProtectedRoute";
 import { LandingPage } from "./pages/LandingPage";
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <HashRouter>
       <AuthProvider>
+        <Cursor />
         <Navbar />
         <main className="app-main">
         <Routes>
