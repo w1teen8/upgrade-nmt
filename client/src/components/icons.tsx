@@ -77,6 +77,31 @@ export function CheckBadgeIcon({ className }: IconProps) {
   );
 }
 
+export function ArrowRightIcon({ className }: IconProps) {
+  return (
+    <svg {...base} width={18} height={18} className={className} aria-hidden="true">
+      <path d="M5 12h14" />
+      <path d="M13 6l6 6-6 6" />
+    </svg>
+  );
+}
+
+export function PlusIcon({ className }: IconProps) {
+  return (
+    <svg {...base} width={14} height={14} className={className} aria-hidden="true" strokeWidth={2.2}>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
+export function StarIcon({ className }: IconProps) {
+  return (
+    <svg width={14} height={14} viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12 2.5l2.9 6.2 6.8.7-5.1 4.6 1.5 6.7-6.1-3.5-6.1 3.5 1.5-6.7-5.1-4.6 6.8-.7L12 2.5Z" />
+    </svg>
+  );
+}
+
 export function GiftIcon({ className }: IconProps) {
   return (
     <svg {...base} className={className} aria-hidden="true">
