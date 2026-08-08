@@ -36,27 +36,14 @@ const FEATURES = [
   },
 ];
 
-// Placeholder social proof — swap for real student feedback before launch.
+// Real student feedback (Telegram). Add more here as they come in.
 const TESTIMONIALS = [
   {
     quote:
-      "Матеріали структуровані по темах, тож не довелось збирати конспекти по різних чатах і папках — усе в одному кабінеті.",
-    name: "Марія",
-    role: "курс «Історія України»",
+      "Брала повний курс історії України та української мови, також інтенсиви, і жодного разу не пошкодувала. Найбільше сподобалась сама платформа: все дуже зручно організовано та нічого не губиться — лекції, тести та матеріали зібрані в одному місці. Також зручно, що можна відмічати пройдені уроки й бачити прогрес — завдяки цьому підготовка не виглядає хаотичною, навпаки, дуже структурованою та комфортною.",
+    name: "Мілена",
+    role: "курси «Історія України» та «Українська мова»",
     color: "linear-gradient(135deg, #16a34a, #34d17c)",
-  },
-  {
-    quote:
-      "Подобається, що можна проходити теми у своєму темпі й одразу перевіряти себе тестом після кожної.",
-    name: "Олег",
-    role: "курс «Українська мова»",
-    color: "linear-gradient(135deg, #0f7d3a, #22c55e)",
-  },
-  {
-    quote: "UpRush підійшов для швидкого повторення перед НМТ — тільки суть, без зайвого.",
-    name: "Софія",
-    role: "UpRush: Історія України",
-    color: "linear-gradient(135deg, #0b6430, #4ade80)",
   },
 ];
 
@@ -107,8 +94,6 @@ export function LandingPage() {
       scrollToId(scrollTo);
     }
   }, [location.state]);
-
-  const [featured, ...rest] = Array.isArray(courses) ? courses : [];
 
   return (
     <div className="landing-page">
@@ -208,23 +193,14 @@ export function LandingPage() {
                 <span className="editorial-panel-badge">Повна програма НМТ</span>
               </div>
 
-              <div className="progress-row">
-                <div className="progress-row-top">
-                  <span>Історія України</span>
-                  <b>32 теми</b>
+              <div className="panel-stat-grid">
+                <div className="panel-stat">
+                  <strong><CountUp value={32} /></strong>
+                  <span>теми — Історія України</span>
                 </div>
-                <div className="progress-track">
-                  <div className="progress-fill" style={{ "--fill": 0.87 } as React.CSSProperties} />
-                </div>
-              </div>
-
-              <div className="progress-row">
-                <div className="progress-row-top">
-                  <span>Українська мова</span>
-                  <b>37 тем</b>
-                </div>
-                <div className="progress-track">
-                  <div className="progress-fill" style={{ "--fill": 1 } as React.CSSProperties} />
+                <div className="panel-stat">
+                  <strong><CountUp value={37} /></strong>
+                  <span>тем — Українська мова</span>
                 </div>
               </div>
 
@@ -251,18 +227,13 @@ export function LandingPage() {
 
         {error && <p className="form-error">{error}</p>}
 
-        {featured && (
+        {courses.length > 0 && (
           <div className="course-collection">
-            <Reveal>
-              <CourseCard course={featured} variant="featured" />
-            </Reveal>
-            <div className="course-collection-secondary">
-              {rest.map((c, i) => (
-                <Reveal key={c.id} delay={(i + 1) * 80}>
-                  <CourseCard course={c} variant="secondary" />
-                </Reveal>
-              ))}
-            </div>
+            {courses.map((c, i) => (
+              <Reveal key={c.id} delay={i * 80}>
+                <CourseCard course={c} variant="secondary" />
+              </Reveal>
+            ))}
           </div>
         )}
       </section>
