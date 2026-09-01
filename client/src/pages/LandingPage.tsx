@@ -1,80 +1,92 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { listCourses, Course } from "../api/courses.api";
-import { getPublicStats } from "../api/stats.api";
 import { CourseCard } from "../components/CourseCard";
-import { CountUp } from "../components/CountUp";
-import { Reveal } from "../components/Reveal";
-import { Magnetic } from "../components/Magnetic";
 import { FaqAccordion, FaqEntry } from "../components/FaqAccordion";
-import { VideoIcon, NotesIcon, CheckBadgeIcon, GiftIcon, ArrowRightIcon } from "../components/icons";
 
-function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+const TOTAL_TOPICS = 69;
+const EXAM_DATE = new Date(2027, 5, 1); // 1 червня 2027
+
+function daysUntilExam(): number {
+  const diff = EXAM_DATE.getTime() - Date.now();
+  return Math.max(0, Math.ceil(diff / 86400000));
 }
 
-const FEATURES = [
-  {
-    icon: <VideoIcon />,
-    title: "Відеолекції по кожній темі",
-    desc: "Розбір усіх тем програми НМТ у форматі коротких, структурованих відео.",
-  },
-  {
-    icon: <NotesIcon />,
-    title: "Конспекти та шпаргалки",
-    desc: "Стислі матеріали для повторення перед тестами й самим НМТ.",
-  },
-  {
-    icon: <CheckBadgeIcon />,
-    title: "Тести після кожної теми",
-    desc: "Mix- та Final-тести — перевір, наскільки добре засвоїв матеріал.",
-  },
-  {
-    icon: <GiftIcon />,
-    title: "Бонуси в кожному курсі",
-    desc: "Додаткові матеріали для повторення — включені безкоштовно до вартості курсу.",
-  },
-];
+interface ScoreBand {
+  coverage: number;
+  hours: string;
+  text: string;
+}
 
-// Real student feedback (Telegram). Add more here as they come in.
-const TESTIMONIALS = [
-  {
-    quote:
-      "Брала повний курс історії України та української мови, також інтенсиви, і жодного разу не пошкодувала. Найбільше сподобалась сама платформа: все дуже зручно організовано та нічого не губиться — лекції, тести та матеріали зібрані в одному місці. Також зручно, що можна відмічати пройдені уроки й бачити прогрес — завдяки цьому підготовка не виглядає хаотичною, навпаки, дуже структурованою та комфортною.",
-    name: "Мілена",
-    role: "курси «Історія України» та «Українська мова»",
-    color: "linear-gradient(135deg, #16a34a, #34d17c)",
-  },
+function bandFor(score: number): ScoreBand {
+  if (score < 130) {
+    return {
+      coverage: 0.4,
+      hours: "3–4",
+      text: "Це нижче порогу для більшості спеціальностей. Вистачить <strong>базових тем</strong>: терміни, дати й головні правила.",
+    };
+  }
+  if (score <= 154) {
+    return {
+      coverage: 0.75,
+      hours: "5–6",
+      text: "Прохідний бал на контракт у багатьох університетах. Достатньо <strong>пройти програму один раз</strong> і закрити слабкі теми.",
+    };
+  }
+  if (score <= 174) {
+    return {
+      coverage: 1,
+      hours: "7–8",
+      text: "Реальна межа бюджету на популярних спеціальностях. Потрібно <strong>пройти всі 69 тем</strong> і повернутись до помилок.",
+    };
+  }
+  if (score <= 189) {
+    return {
+      coverage: 1.3,
+      hours: "9–10",
+      text: "Верхні <strong>10% абітурієнтів</strong>. Тут вирішують деталі: історичні джерела, карти, наголоси й пунктуація.",
+    };
+  }
+  return {
+    coverage: 1.6,
+    hours: "10+",
+    text: "Майже без помилок. Готуй <strong>кожну тему двічі</strong> й доводь тести до стабільних 95%.",
+  };
+}
+
+const HOW_STEPS = [
+  { title: "Дивись", desc: "Відеолекція без переказу підручника: тільки те, що перевіряють на тесті." },
+  { title: "Конспектуй", desc: "Готовий конспект, у який ти дописуєш свої приклади й асоціації." },
+  { title: "Тестуй", desc: "20 питань у форматі НМТ одразу після теми, з поясненням кожної відповіді." },
+  { title: "Повторюй", desc: "Помилки повертаються через 3, 10 і 30 днів — поки не почнеш відповідати впевнено." },
 ];
 
 const FAQ: FaqEntry[] = [
   {
-    q: "Чи можна проходити курс у своєму темпі?",
-    a: "Так. Після відкриття доступу всі матеріали курсу доступні одразу — дивіться відео, конспекти й проходьте тести у зручному для себе темпі, без дедлайнів.",
+    q: "Скільки часу потрібно щотижня?",
+    a: "Близько трьох годин на предмет, якщо починаєш за рік до іспиту. Планувальник угорі сторінки перерахує темп під твій цільовий бал.",
   },
   {
-    q: "Як відбувається оплата?",
-    a: "Оплата проходить поза сайтом: ви пишете в Telegram, переказуєте кошти, після чого адміністратор вручну відкриває доступ до курсу у вашому кабінеті.",
+    q: "Я починаю з нуля. Встигну?",
+    a: "Так, якщо стартуєш восени. Теми йдуть від простих до складних, і перед кожною є короткий блок базових понять.",
   },
   {
-    q: "Що входить у повний курс?",
-    a: "Відеолекції по кожній темі програми, конспекти, шпаргалки для повторення та тести для перевірки знань — плюс бонусні матеріали без додаткової оплати.",
+    q: "Чи будуть матеріали оновлені під програму 2027 року?",
+    a: "Теми оновлюємо після кожної публікації програми МОН. Позначка «оновлено» біля теми в кабінеті.",
   },
   {
     q: "Чим UpRush відрізняється від повного курсу?",
-    a: "UpRush — стислий інтенсив: ключові шпаргалки, практичні завдання й тести для швидкого повторення матеріалу перед НМТ.",
-  },
-  {
-    q: "Чи є реферальна програма?",
-    a: "Так — запрошуйте друзів і отримуйте бонуси за кожного, хто приєднається. Деталі на сторінці «Реферальна система».",
+    a: "Повний курс — весь матеріал з відеолекціями й конспектами на рік підготовки. UpRush — триденний інтенсив: уся програма стисло, практика, шпаргалки й тести.",
   },
 ];
+
+function scrollToCourses() {
+  document.getElementById("courses")?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
 export function LandingPage() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [registeredUsers, setRegisteredUsers] = useState<number | null>(null);
-  const location = useLocation();
+  const [score, setScore] = useState(175);
 
   useEffect(() => {
     listCourses()
@@ -82,196 +94,130 @@ export function LandingPage() {
       .catch(() => setError("Не вдалося завантажити курси."));
   }, []);
 
-  useEffect(() => {
-    getPublicStats()
-      .then((s) => setRegisteredUsers(s.registeredUsers))
-      .catch(() => {});
-  }, []);
-
-  useEffect(() => {
-    const scrollTo = (location.state as { scrollTo?: string } | null)?.scrollTo;
-    if (scrollTo) {
-      scrollToId(scrollTo);
-    }
-  }, [location.state]);
+  const daysLeft = daysUntilExam();
+  const weeks = Math.max(1, Math.round(daysLeft / 7));
+  const band = bandFor(score);
+  const topicsPerWeek = Math.max(1, Math.ceil((TOTAL_TOPICS * band.coverage) / weeks));
+  const sliderPct = ((score - 100) / 100) * 100;
 
   return (
     <div className="landing-page">
-      <section className="hero noise">
-        <div className="hero-glow hero-glow-a" aria-hidden="true" />
-        <div className="hero-glow hero-glow-b" aria-hidden="true" />
-        <div className="hero-glow hero-glow-c" aria-hidden="true" />
+      <section className="hero">
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="pill-counter">{daysLeft} днів до основної сесії НМТ 2027</p>
+            <h1>Історія та мова, розкладені на теми, які реально встигнути</h1>
+            <p className="hero-lede">
+              Кожна тема програми — це відеолекція, конспект на кілька сторінок, шпаргалка з
+              датами та тест у форматі НМТ. Проходиш тему — бачиш, скільки балів вона тобі вже
+              дає.
+            </p>
+            <div className="hero-actions">
+              <button type="button" className="btn btn-primary btn-lg" onClick={scrollToCourses}>
+                Почати навчання
+              </button>
+              <button type="button" className="btn btn-outline btn-lg" onClick={scrollToCourses}>
+                Обери свій курс
+              </button>
+            </div>
+            <p className="hero-fine-print">
+              Доступ з телефона й ноутбука. Скасувати підписку можна будь-коли.
+            </p>
+          </div>
 
-        <div className="hero-inner">
-          <span className="eyebrow">
-            <span className="eyebrow-dot" aria-hidden="true" />
-            UpGrade NMT · Підготовка до НМТ 2027
-          </span>
-          <h1>
-            Підготовка до НМТ,
-            <br />
-            яка відчувається <span className="hero-headline-accent">простіше</span>.
-          </h1>
-          <p className="hero-subtitle">
-            Історія України та українська мова — відеолекції, конспекти, шпаргалки й тести по
-            кожній темі програми, зібрані в одному кабінеті.
-          </p>
-          <div className="hero-actions">
-            <Magnetic>
-              <button type="button" className="btn btn-primary btn-lg" onClick={() => scrollToId("courses")}>
-                Обрати курс
-                <ArrowRightIcon className="btn-arrow" />
-              </button>
-            </Magnetic>
-            <Magnetic>
-              <button
-                type="button"
-                className="btn btn-outline btn-lg"
-                onClick={() => scrollToId("features")}
-              >
-                Дізнатися більше
-              </button>
-            </Magnetic>
+          <div className="planner" aria-label="Планувальник цільового балу">
+            <p className="planner-title">Який бал тобі потрібен?</p>
+            <p className="planner-score">{score}</p>
+            <input
+              type="range"
+              min={100}
+              max={200}
+              step={1}
+              value={score}
+              onChange={(e) => setScore(Number(e.target.value))}
+              aria-label="Цільовий бал НМТ"
+              style={{
+                background: `linear-gradient(to right, var(--accent-bright) ${sliderPct}%, rgba(255,255,255,.25) ${sliderPct}%)`,
+              }}
+            />
+            <div className="planner-scale">
+              <span>100</span>
+              <span>150</span>
+              <span>200</span>
+            </div>
+            <p className="planner-output" dangerouslySetInnerHTML={{ __html: band.text }} />
+            <div className="planner-stats">
+              <div className="planner-stat">
+                <strong>{weeks}</strong>
+                <span>тижнів до іспиту</span>
+              </div>
+              <div className="planner-stat">
+                <strong>{topicsPerWeek}</strong>
+                <span>теми на тиждень</span>
+              </div>
+              <div className="planner-stat">
+                <strong>{band.hours}</strong>
+                <span>годин на тиждень</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="features" className="section">
-        <div className="editorial">
-          <Reveal className="editorial-copy">
-            <span className="eyebrow">
-              <span className="eyebrow-dot" aria-hidden="true" />
-              Що всередині
-            </span>
-            <h2>Все для підготовки в одному кабінеті</h2>
-            <p>Жодних розкиданих файлів і посилань — тільки структуровані матеріали по темах.</p>
-            <div className="editorial-list">
-              {FEATURES.map((f) => (
-                <div className="editorial-item" key={f.title}>
-                  <div className="editorial-item-icon">{f.icon}</div>
-                  <div>
-                    <h4>{f.title}</h4>
-                    <p>{f.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Reveal>
-
-          <Reveal delay={120}>
-            <div className="editorial-panel noise">
-              <div className="editorial-panel-glow" aria-hidden="true" />
-              <div className="editorial-panel-head">
-                <h3>Скільки тем у кожному курсі</h3>
-                <span className="editorial-panel-badge">Повна програма НМТ</span>
-              </div>
-
-              <div className="panel-stat-grid">
-                <div className="panel-stat">
-                  <strong><CountUp value={32} /></strong>
-                  <span>теми — Історія України</span>
-                </div>
-                <div className="panel-stat">
-                  <strong><CountUp value={37} /></strong>
-                  <span>тем — Українська мова</span>
-                </div>
-              </div>
-
-              <div className="editorial-panel-tags">
-                <span className="editorial-panel-tag">Конспекти</span>
-                <span className="editorial-panel-tag">Шпаргалки</span>
-                <span className="editorial-panel-tag">Тести</span>
-                <span className="editorial-panel-tag">Відео</span>
-              </div>
-            </div>
-          </Reveal>
+      <section id="courses" className="section">
+        <div className="section-title align-left">
+          <h2>Чотири курси на вибір</h2>
+          <p>
+            Повні курси — на весь рік підготовки. UpRush — коли до НМТ лишились дні й треба
+            пробігти всю програму ще раз.
+          </p>
         </div>
-      </section>
-
-      <section id="courses" className="section section-alt">
-        <Reveal className="section-title">
-          <span className="eyebrow">
-            <span className="eyebrow-dot" aria-hidden="true" />
-            Курси
-          </span>
-          <h2>Обери свій курс</h2>
-          <p>Повні курси з усією програмою або UpRush для швидкого фінального повторення.</p>
-        </Reveal>
 
         {error && <p className="form-error">{error}</p>}
 
         {courses.length > 0 && (
           <div className="course-collection">
-            {courses.map((c, i) => (
-              <Reveal key={c.id} delay={i * 80}>
-                <CourseCard course={c} variant="secondary" />
-              </Reveal>
+            {courses.map((c) => (
+              <CourseCard key={c.id} course={c} variant="secondary" />
             ))}
           </div>
         )}
       </section>
 
-      <section className="section section-tight">
-        <Reveal className="proof-strip">
-          <div className="proof-avatars" aria-hidden="true">
-            {TESTIMONIALS.map((t) => (
-              <span className="proof-avatar" style={{ background: t.color }} key={t.name}>
-                {t.name[0]}
-              </span>
-            ))}
-          </div>
-          <span>
-            {registeredUsers !== null
-              ? `Разом із ${registeredUsers} учнями, які вже готуються з UpGrade NMT`
-              : "Учні вже готуються разом з UpGrade NMT"}
-          </span>
-        </Reveal>
-
-        <div className="testimonial-grid">
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal key={t.name} delay={i * 90}>
-              <div className="testimonial-card">
-                <p className="testimonial-quote">«{t.quote}»</p>
-                <div className="testimonial-author">
-                  <span className="testimonial-avatar" style={{ background: t.color }}>
-                    {t.name[0]}
-                  </span>
-                  <div>
-                    <div className="testimonial-author-name">{t.name}</div>
-                    <div className="testimonial-author-role">{t.role}</div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+      <section id="how" className="section section-alt">
+        <div className="section-title align-left">
+          <h2>Одна тема — чотири кроки</h2>
+          <p>Цикл повторюється для кожної теми. На нього йде приблизно година.</p>
         </div>
+        <ol className="steps">
+          {HOW_STEPS.map((s, i) => (
+            <li className="step" key={s.title}>
+              <span className="step-num">{i + 1}</span>
+              <h3>{s.title}</h3>
+              <p>{s.desc}</p>
+            </li>
+          ))}
+        </ol>
       </section>
 
-      <section id="faq" className="section section-alt">
-        <Reveal className="section-title">
-          <span className="eyebrow">
-            <span className="eyebrow-dot" aria-hidden="true" />
-            Питання
-          </span>
-          <h2>Часті запитання</h2>
-        </Reveal>
-        <Reveal delay={80}>
-          <FaqAccordion items={FAQ} />
-        </Reveal>
+      <section id="faq" className="section">
+        <div className="section-title align-left">
+          <h2>Питання, які ставлять найчастіше</h2>
+        </div>
+        <FaqAccordion items={FAQ} />
       </section>
 
-      <section className="final-cta noise">
-        <div className="final-cta-glow" aria-hidden="true" />
-        <Reveal>
-          <h2>Готовий підняти свій результат на НМТ?</h2>
-          <p>Обери курс, відкрий доступ і почни готуватись вже сьогодні — крок за кроком, по темах.</p>
-          <Magnetic>
-            <button type="button" className="btn btn-primary btn-lg" onClick={() => scrollToId("courses")}>
-              Почати підготовку
-              <ArrowRightIcon className="btn-arrow" />
-            </button>
-          </Magnetic>
-        </Reveal>
+      <section className="final-cta">
+        <div className="final-cta-inner">
+          <h2>Обери курс і починай</h2>
+          <p>
+            Повні курси зі знижкою до 1200 грн, інтенсиви UpRush — 200 грн. Оплата одноразова,
+            доступ одразу після неї.
+          </p>
+          <button type="button" className="btn btn-primary btn-lg" onClick={scrollToCourses}>
+            Перейти до курсів
+          </button>
+        </div>
       </section>
     </div>
   );
