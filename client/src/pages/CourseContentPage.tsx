@@ -18,6 +18,14 @@ const MATERIAL_LABELS: Record<string, string> = {
   other: "Матеріал",
 };
 
+function pluralize(n: number, one: string, few: string, many: string): string {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return one;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+  return many;
+}
+
 function toEmbedUrl(url: string): string | null {
   const byShortLink = url.match(/youtu\.be\/([\w-]+)/);
   if (byShortLink) return `https://www.youtube.com/embed/${byShortLink[1]}`;
@@ -28,11 +36,50 @@ function toEmbedUrl(url: string): string | null {
   return null;
 }
 
+function VideoBlock({ material }: { material: Material }) {
+  const [started, setStarted] = useState(false);
+  const embedUrl = toEmbedUrl(material.url);
+
+  if (!embedUrl) {
+    return (
+      <p>
+        <a href={material.url} target="_blank" rel="noreferrer">
+          {material.title}
+        </a>
+      </p>
+    );
+  }
+
+  return (
+    <div className="video">
+      {started ? (
+        <iframe
+          src={`${embedUrl}?autoplay=1`}
+          title={material.title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <>
+          <button
+            type="button"
+            className="play"
+            aria-label={`Відтворити: ${material.title}`}
+            onClick={() => setStarted(true)}
+          />
+          <p className="video-cap">{material.title}</p>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function CourseContentPage() {
   const { slug, topicId } = useParams<{ slug: string; topicId?: string }>();
   const navigate = useNavigate();
   const [course, setCourse] = useState<(Course & { topics: TopicWithMaterials[] }) | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [sideOpen, setSideOpen] = useState(true);
 
   useEffect(() => {
     if (!slug) return;
@@ -63,9 +110,18 @@ export function CourseContentPage() {
     return <Navigate to={`/dashboard/courses/${slug}/topics/${course.topics[0].id}`} replace />;
   }
 
-  const activeTopic = course.topics.find((t) => String(t.id) === topicId) ?? course.topics[0];
+  const activeIndex = course.topics.findIndex((t) => String(t.id) === topicId);
+  const activeTopic = activeIndex >= 0 ? course.topics[activeIndex] : course.topics[0];
+  const prevTopic = activeIndex > 0 ? course.topics[activeIndex - 1] : null;
+  const nextTopic = activeIndex >= 0 && activeIndex < course.topics.length - 1 ? course.topics[activeIndex + 1] : null;
+
+  const numberedTopics = course.topics.filter((t) => t.sort_order >= 0);
+  const doneCount = numberedTopics.filter((t) => t.completed).length;
+  const progressPct = numberedTopics.length > 0 ? Math.round((doneCount / numberedTopics.length) * 100) : 0;
+
   const videoMaterials = activeTopic.materials.filter((m) => m.type === "video");
-  const listMaterials = activeTopic.materials.filter((m) => m.type !== "video");
+  const testMaterials = activeTopic.materials.filter((m) => m.type === "test");
+  const otherMaterials = activeTopic.materials.filter((m) => m.type !== "video" && m.type !== "test");
 
   function patchMaterial(materialId: number, done: boolean) {
     setCourse((prev) => {
@@ -110,93 +166,189 @@ export function CourseContentPage() {
     }
   }
 
+  function goToTopic(id: number) {
+    navigate(`/dashboard/courses/${slug}/topics/${id}`);
+  }
+
   return (
-    <div className="course-content-layout">
-      <aside className="course-sidebar">
-        <Link to="/dashboard" className="course-sidebar-back">
-          ← Мої курси
-        </Link>
-        <h2>{course.title}</h2>
-        <nav className="course-sidebar-nav">
-          {course.topics.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={[
-                "sidebar-topic",
-                String(t.id) === topicId ? "active" : "",
-                t.sort_order < 0 ? "bonus" : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
-              onClick={() => navigate(`/dashboard/courses/${slug}/topics/${t.id}`)}
-            >
-              <span className="sidebar-topic-check">{t.completed ? "✓" : ""}</span>
-              {t.title}
-            </button>
-          ))}
-        </nav>
-      </aside>
-
-      <main className="course-main">
-        <h1>{activeTopic.title}</h1>
-
-        {videoMaterials.map((v) => {
-          const embedUrl = toEmbedUrl(v.url);
-          return (
-            <div key={v.id} className="video-block">
-              {videoMaterials.length > 1 && <h3 className="video-block-title">{v.title}</h3>}
-              {embedUrl ? (
-                <div className="video-frame">
-                  <iframe
-                    src={embedUrl}
-                    title={v.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              ) : (
-                <p>
-                  <a href={v.url} target="_blank" rel="noreferrer">
-                    {v.title}
-                  </a>
-                </p>
-              )}
-            </div>
-          );
-        })}
-
-        <ul className="material-checklist">
-          {listMaterials.map((m) => (
-            <li key={m.id} className={m.done ? "done" : ""}>
-              {m.type === "test" ? (
-                <label>
-                  <input type="checkbox" checked={!!m.done} onChange={() => toggleMaterial(m)} />
-                  <span className="material-type">{MATERIAL_LABELS[m.type] ?? m.type}:</span>{" "}
-                  <a href={m.url} target="_blank" rel="noreferrer">
-                    {m.title}
-                  </a>
-                </label>
-              ) : (
-                <span className="material-row">
-                  <span className="material-type">{MATERIAL_LABELS[m.type] ?? m.type}:</span>{" "}
-                  <a href={m.url} target="_blank" rel="noreferrer">
-                    {m.title}
-                  </a>
-                </span>
-              )}
-            </li>
-          ))}
-          {listMaterials.length === 0 && videoMaterials.length === 0 && <li>Матеріали ще не додано.</li>}
-        </ul>
+    <div className="topic-shell">
+      <aside className="side">
+        <div className="side-head">
+          <Link to="/dashboard" className="side-back">
+            ← Мої курси
+          </Link>
+          <h2>{course.title}</h2>
+          <div className="side-bar">
+            <i style={{ width: `${progressPct}%` }} />
+          </div>
+          <p className="side-bar-note">
+            {doneCount} з {numberedTopics.length} {pluralize(numberedTopics.length, "тема", "теми", "тем")} пройдено
+          </p>
+        </div>
 
         <button
           type="button"
-          className={`btn btn-lg ${activeTopic.completed ? "btn-done" : "btn-primary"}`}
-          onClick={toggleTopic}
+          className="side-toggle"
+          aria-expanded={sideOpen}
+          onClick={() => setSideOpen((v) => !v)}
         >
-          {activeTopic.completed ? "✓ Тему завершено" : "Позначити тему завершеною"}
+          {sideOpen ? "Список тем ▾" : "Список тем ▸"}
         </button>
+
+        <div className="side-list" hidden={!sideOpen}>
+          {course.topics
+            .filter((t) => t.sort_order < 0)
+            .map((t) => (
+              <button key={t.id} type="button" className="pin" onClick={() => goToTopic(t.id)}>
+                <span aria-hidden="true">{/бонус|подкаст/i.test(t.title) ? "🎧" : "📎"}</span>
+                <span>{t.title}</span>
+              </button>
+            ))}
+
+          {numberedTopics.length > 0 && <p className="side-sep">ТЕМИ КУРСУ</p>}
+
+          {numberedTopics.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              className={["tp", t.completed ? "done" : "", String(t.id) === topicId ? "now" : ""]
+                .filter(Boolean)
+                .join(" ")}
+              onClick={() => goToTopic(t.id)}
+            >
+              <span className="tp-num">{t.sort_order}</span>
+              <span className="tp-title">{t.title}</span>
+            </button>
+          ))}
+        </div>
+      </aside>
+
+      <main className="topic-main">
+        <p className="crumb">
+          <Link to="/dashboard">Мої курси</Link> · <Link to={`/dashboard/courses/${slug}`}>{course.title}</Link> ·{" "}
+          {activeTopic.sort_order >= 0 ? `Тема ${activeTopic.sort_order}` : activeTopic.title}
+        </p>
+        <h1>{activeTopic.title}</h1>
+
+        <div className="topic-meta">
+          {videoMaterials.length > 0 && (
+            <span className="chip">
+              {videoMaterials.length === 1 ? "Відеолекція" : `Відео: ${videoMaterials.length}`}
+            </span>
+          )}
+          {testMaterials.length > 0 && (
+            <span className="chip">
+              {testMaterials.length} {pluralize(testMaterials.length, "тест", "тести", "тестів")}
+            </span>
+          )}
+          {otherMaterials.length > 0 && (
+            <span className="chip">
+              {otherMaterials.length} {pluralize(otherMaterials.length, "матеріал", "матеріали", "матеріалів")}
+            </span>
+          )}
+          {activeTopic.completed && <span className="chip ok">Тему пройдено</span>}
+        </div>
+
+        {videoMaterials.map((v) => (
+          <VideoBlock key={v.id} material={v} />
+        ))}
+
+        {testMaterials.length > 0 && (
+          <>
+            <h2 className="sec-h">Перевір себе</h2>
+            <div className="tasks">
+              {testMaterials.map((m) => (
+                <div key={m.id} className={`task ${m.done ? "done" : ""}`}>
+                  <button
+                    type="button"
+                    className="tick"
+                    aria-pressed={!!m.done}
+                    aria-label={m.done ? "Позначити тест непройденим" : "Позначити тест пройденим"}
+                    onClick={() => toggleMaterial(m)}
+                  >
+                    <svg width="14" height="11" viewBox="0 0 14 11" fill="none">
+                      <path
+                        d="M1 5.5 5 9.5 13 1.5"
+                        stroke="#fff"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <span className="task-body">
+                    <b>{m.title}</b>
+                    <span>{m.done ? "Пройдено" : "Ще не пройдено"}</span>
+                  </span>
+                  <a className="btn btn-alt go" href={m.url} target="_blank" rel="noreferrer">
+                    {m.done ? "Перепройти" : "Пройти"}
+                  </a>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {otherMaterials.length > 0 && (
+          <>
+            <h2 className="sec-h">Матеріали теми</h2>
+            <div className="tasks">
+              {otherMaterials.map((m) => (
+                <div key={m.id} className="task">
+                  <span className="tick" aria-hidden="true" />
+                  <span className="task-body">
+                    <b>{m.title}</b>
+                    <span>{MATERIAL_LABELS[m.type] ?? m.type}</span>
+                  </span>
+                  <a className="btn btn-alt go" href={m.url} target="_blank" rel="noreferrer">
+                    Відкрити
+                  </a>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {!activeTopic.completed ? (
+          <button type="button" className="btn btn-green btn-lg" onClick={toggleTopic}>
+            Позначити тему завершеною
+          </button>
+        ) : (
+          <div className="done-bar">
+            <div>
+              <h3>Тему закрито</h3>
+              <p>Повернись до неї через 10 днів — так матеріал утримується в пам'яті надовше.</p>
+            </div>
+            {nextTopic ? (
+              <button type="button" className="btn btn-green btn-lg" onClick={() => goToTopic(nextTopic.id)}>
+                Наступна тема
+              </button>
+            ) : (
+              <button type="button" className="btn btn-alt btn-lg" onClick={toggleTopic}>
+                Скасувати позначку
+              </button>
+            )}
+          </div>
+        )}
+
+        {(prevTopic || nextTopic) && (
+          <div className="pager">
+            {prevTopic ? (
+              <button type="button" className="pg" onClick={() => goToTopic(prevTopic.id)}>
+                <span>← Попередня тема</span>
+                <b>{prevTopic.title}</b>
+              </button>
+            ) : (
+              <span />
+            )}
+            {nextTopic && (
+              <button type="button" className="pg next" onClick={() => goToTopic(nextTopic.id)}>
+                <span>Наступна тема →</span>
+                <b>{nextTopic.title}</b>
+              </button>
+            )}
+          </div>
+        )}
       </main>
     </div>
   );
