@@ -31,6 +31,10 @@ export function Footer() {
             <h4>Кабінет</h4>
             <Link to="/dashboard">Мої курси</Link>
           </div>
+          <div className="footer-col">
+            <h4>Контакти</h4>
+            <a href="mailto:support@upgradenmt.com">support@upgradenmt.com</a>
+          </div>
         </div>
       </div>
 
