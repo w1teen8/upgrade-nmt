@@ -133,33 +133,6 @@ export function LandingPage() {
               </button>
             </Magnetic>
           </div>
-
-          <div className="hero-stats-band">
-            <div className="hero-stats">
-              <div className="hero-stat">
-                <strong><CountUp value={32} /></strong>
-                <span>Теми з історії</span>
-              </div>
-              <div className="hero-stat">
-                <strong><CountUp value={37} /></strong>
-                <span>Тем з української</span>
-              </div>
-              <div className="hero-stat">
-                <strong><CountUp value={4} /></strong>
-                <span>Формати матеріалів</span>
-              </div>
-              <div className="hero-stat">
-                <strong><CountUp value={2027} /></strong>
-                <span>Рік НМТ</span>
-              </div>
-              {registeredUsers !== null && (
-                <div className="hero-stat">
-                  <strong><CountUp value={registeredUsers} /></strong>
-                  <span>Зареєстровано учнів</span>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       </section>
 
