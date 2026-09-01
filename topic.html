@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2 Тема. Стародавня історія України — UpGrade NMT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0C2B1E;
+  --ink-soft:#33574A;
+  --muted:#6A8579;
+  --paper:#E6EDE7;
+  --white:#FFFFFF;
+  --green:#25B45A;
+  --green-soft:rgba(37,180,90,.12);
+  --ochre:#D99A2B;
+  --line:rgba(12,43,30,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.6 "Manrope",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.u{font-family:"Unbounded","Manrope",sans-serif;letter-spacing:-.02em;line-height:1.12;margin:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--green);outline-offset:3px;border-radius:6px}
+
+/* ---------- header ---------- */
+.top{position:sticky;top:0;z-index:20;background:rgba(230,237,231,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top-in{width:min(1360px,100% - 40px);margin-inline:auto;display:flex;align-items:center;gap:26px;height:68px}
+.logo{font-family:"Unbounded",sans-serif;font-weight:900;font-size:19px;letter-spacing:-.03em;text-decoration:none}
+.logo span{color:var(--green)}
+.top nav{display:flex;gap:24px;margin-left:auto;font-size:15px;font-weight:500}
+.top nav a{text-decoration:none;color:var(--ink-soft);border-bottom:2px solid transparent;padding:3px 0}
+.top nav a:hover,.top nav a[aria-current]{color:var(--ink);border-bottom-color:var(--green)}
+
+/* ---------- layout ---------- */
+.shell{width:min(1360px,100% - 40px);margin-inline:auto;display:grid;grid-template-columns:344px minmax(0,1fr);gap:32px;padding:28px 0 72px;align-items:start}
+
+/* ---------- sidebar ---------- */
+.side{position:sticky;top:96px;background:var(--white);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.side-head{padding:22px 22px 18px;border-bottom:1px solid var(--line)}
+.back{display:inline-block;font-size:14px;color:var(--muted);text-decoration:none;margin-bottom:12px}
+.back:hover{color:var(--ink)}
+.side-head h2{font-size:17px;font-weight:700}
+.bar{height:6px;border-radius:99px;background:var(--paper);margin:16px 0 8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);border-radius:99px}
+.bar-note{font-size:13.5px;color:var(--muted)}
+.side-list{max-height:min(62vh,720px);overflow:auto;padding:10px}
+.pin{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;text-decoration:none;font-size:14.5px;font-weight:700;color:var(--ink-soft)}
+.pin:hover{background:var(--paper)}
+.pin b{font-weight:700}
+.tp{display:flex;gap:12px;padding:12px 14px;border-radius:12px;text-decoration:none;color:var(--ink);line-height:1.4}
+.tp:hover{background:var(--paper)}
+.tp-num{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:12.5px;font-weight:700;color:var(--muted);margin-top:1px}
+.tp-title{font-size:14.5px}
+.tp.done .tp-num{background:var(--green);border-color:var(--green);color:var(--white)}
+.tp.done .tp-title{color:var(--ink-soft)}
+.tp.now{background:var(--ink);color:var(--white)}
+.tp.now:hover{background:var(--ink)}
+.tp.now .tp-num{background:var(--green);border-color:var(--green);color:var(--white)}
+.tp.now .tp-title{font-weight:700}
+.side-list::-webkit-scrollbar{width:10px}
+.side-list::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px;border:3px solid var(--white)}
+.side-sep{margin:10px 14px 6px;font-size:12.5px;font-weight:700;color:var(--muted)}
+
+/* ---------- main ---------- */
+.crumb{font-size:14px;color:var(--muted);margin-bottom:14px}
+.crumb a{text-decoration:none}
+.crumb a:hover{color:var(--ink)}
+h1{font-size:clamp(26px,3vw,38px);font-weight:900;max-width:22ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.chip{background:var(--white);border:1px solid var(--line);border-radius:999px;padding:6px 13px;font-size:13.5px;font-weight:500;color:var(--ink-soft)}
+.chip.ok{background:var(--green-soft);border-color:transparent;color:#1B7B3E;font-weight:700}
+
+.video{margin-top:24px;position:relative;border-radius:20px;overflow:hidden;background:var(--ink);aspect-ratio:16/9;display:grid;place-items:center;border:1px solid var(--line)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.play{width:74px;height:74px;border-radius:50%;background:var(--green);border:0;display:grid;place-items:center;cursor:pointer}
+.play::after{content:"";border-left:20px solid var(--white);border-top:12px solid transparent;border-bottom:12px solid transparent;margin-left:5px}
+.video-cap{position:absolute;left:0;right:0;bottom:0;padding:44px 22px 18px;color:var(--white);font-weight:700;font-size:16px;background:linear-gradient(transparent,rgba(12,43,30,.85));pointer-events:none}
+
+h2.sec-h{font-size:19px;font-weight:700;margin:38px 0 14px}
+.tasks{display:grid;gap:10px}
+.task{display:flex;align-items:center;gap:16px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px 20px}
+.task.done{background:var(--green-soft);border-color:transparent}
+.tick{flex:none;width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);display:grid;place-items:center;background:var(--white)}
+.task.done .tick{background:var(--green);border-color:var(--green)}
+.tick svg{display:none}
+.task.done .tick svg{display:block}
+.task-body{min-width:0}
+.task-body b{display:block;font-size:16px}
+.task-body span{font-size:13.5px;color:var(--muted)}
+.task .go{margin-left:auto;flex:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;font:700 15px/1 "Manrope",sans-serif;text-decoration:none;padding:14px 22px;border-radius:999px;border:2px solid var(--ink);background:var(--ink);color:var(--white);cursor:pointer;white-space:nowrap}
+.btn:hover{background:#153f2c;border-color:#153f2c}
+.btn-alt{background:transparent;color:var(--ink)}
+.btn-alt:hover{background:rgba(12,43,30,.07)}
+.btn-green{background:var(--green);border-color:var(--green);color:var(--ink)}
+.btn-green:hover{background:#1F9E48;border-color:#1F9E48}
+.btn-lg{padding:17px 26px;font-size:16px}
+
+/* pager */
+.pager{display:flex;gap:16px;justify-content:space-between;align-items:stretch;margin-top:40px;flex-wrap:wrap}
+.pg{flex:1 1 260px;background:var(--white);border:1px solid var(--line);border-radius:16px;padding:16px 20px;text-decoration:none}
+.pg:hover{border-color:var(--ink)}
+.pg span{font-size:13px;color:var(--muted)}
+.pg b{display:block;font-size:15px;margin-top:4px;line-height:1.35}
+.pg.next{text-align:right}
+
+.done-bar{margin-top:26px;background:var(--ink);color:var(--white);border-radius:18px;padding:22px 26px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.done-bar p{color:rgba(255,255,255,.75);font-size:15px;max-width:46ch}
+.done-bar .btn{margin-left:auto}
+
+.report{display:inline-flex;align-items:center;gap:8px;margin-top:34px;font-size:14px;color:var(--muted);text-decoration:none}
+.report:hover{color:var(--ink)}
+
+.side-toggle{display:none}
+
+@media (max-width:1080px){
+  .shell{grid-template-columns:1fr;gap:20px}
+  .side{position:static;order:2}
+  .side-list{max-height:none}
+  .side-toggle{display:block;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:16px 22px;font:700 15px "Manrope",sans-serif;color:var(--ink);cursor:pointer}
+  .side-list[hidden]{display:none}
+  .top nav a:not([aria-current]){display:none}
+}
+@media (max-width:560px){
+  .task{flex-wrap:wrap}
+  .task .go{margin-left:38px;width:calc(100% - 38px)}
+  .done-bar .btn{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="logo" href="#">UpGrade<span>.</span>NMT</a>
+    <nav>
+      <a href="#">Курси</a>
+      <a href="#">Реферальна система</a>
+      <a href="#" aria-current="page">Мої курси</a>
+      <a href="#">Вийти</a>
+    </nav>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="side-head">
+      <a class="back" href="#">← Мої курси</a>
+      <h2>Історія України — повний курс</h2>
+      <div class="bar"><i style="width:12.5%"></i></div>
+      <p class="bar-note">4 з 32 тем пройдено · наступний контроль через 2 теми</p>
+    </div>
+
+    <button class="side-toggle" id="toggle" aria-expanded="true" aria-controls="list">Список тем ▾</button>
+
+    <div class="side-list" id="list">
+      <a class="pin" href="#">📎 <span>Додаткові матеріали</span></a>
+      <a class="pin" href="#">🎧 <span>Бонус: 5 подкастів для повторення</span></a>
+
+      <p class="side-sep">ТЕМИ КУРСУ</p>
+
+      <a class="tp now" href="#">
+        <span class="tp-num">2</span>
+        <span class="tp-title">Стародавня історія України</span>
+      </a>
+      <a class="tp done" href="#">
+        <span class="tp-num">3</span>
+        <span class="tp-title">Русь-Україна. Київська держава</span>
+      </a>
+      <a class="tp done" href="#">
+        <span class="tp-num">4</span>
+        <span class="tp-title">Королівство Руське (Галицько-Волинська держава). Монгольська навала</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">5</span>
+        <span class="tp-title">Руські удільні князівства у складі іноземних держав. Кримське ханство</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">6</span>
+        <span class="tp-title">Українські землі у складі Речі Посполитої в другій половині XVI ст.</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">7</span>
+        <span class="tp-title">Українські землі у складі Речі Посполитої в першій половині XVII ст.</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">8</span>
+        <span class="tp-title">Національно-визвольна війна українського народу середини XVII ст.</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">9</span>
+        <span class="tp-title">Козацька Україна наприкінці 50–80-х рр. XVII ст.</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">10</span>
+        <span class="tp-title">Українські землі наприкінці XVII — в першій половині XVIII ст.</span>
+      </a>
+      <a class="tp" href="#">
+        <span class="tp-num">11</span>
+        <span class="tp-title">Українські землі в другій половині XVIII ст.</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+    <p class="crumb"><a href="#">Мої курси</a> · <a href="#">Історія України — повний курс</a> · Тема 2</p>
+    <h1>Стародавня історія України</h1>
+
+    <div class="meta">
+      <span class="chip">Відеолекція · 24 хв</span>
+      <span class="chip">2 тести</span>
+      <span class="chip">1 матеріал</span>
+      <span class="chip ok">Тему пройдено</span>
+    </div>
+
+    <div class="video">
+      <button class="play" id="play" aria-label="Відтворити лекцію"></button>
+      <p class="video-cap">Лекція 2. Стародавня історія України</p>
+    </div>
+
+    <h2 class="sec-h">Перевір себе</h2>
+    <div class="tasks">
+      <div class="task done">
+        <span class="tick"><svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5 5 9.5 13 1.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="task-body">
+          <b>Mix-тест</b>
+          <span>20 питань · результат 17 з 20 · пройдено 14 серпня</span>
+        </span>
+        <a class="btn btn-alt go" href="#">Перепройти</a>
+      </div>
+
+      <div class="task done">
+        <span class="tick"><svg width="14" height="11" viewBox="0 0 14 11" fill="none"><path d="M1 5.5 5 9.5 13 1.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="task-body">
+          <b>Final-тест</b>
+          <span>25 питань · результат 22 з 25 · пройдено 15 серпня</span>
+        </span>
+        <a class="btn btn-alt go" href="#">Перепройти</a>
+      </div>
+    </div>
+
+    <h2 class="sec-h">Матеріали теми</h2>
+    <div class="tasks">
+      <div class="task">
+        <span class="tick"></span>
+        <span class="task-body">
+          <b>Таблиця: кіммерійці, скіфи, сармати</b>
+          <span>PDF · 2 сторінки</span>
+        </span>
+        <a class="btn btn-alt go" href="#">Відкрити</a>
+      </div>
+      <div class="task">
+        <span class="tick"></span>
+        <span class="task-body">
+          <b>Конспект теми</b>
+          <span>PDF · 6 сторінок</span>
+        </span>
+        <a class="btn btn-alt go" href="#">Відкрити</a>
+      </div>
+      <div class="task">
+        <span class="tick"></span>
+        <span class="task-body">
+          <b>Шпаргалка: дати й терміни</b>
+          <span>PDF · 1 сторінка</span>
+        </span>
+        <a class="btn btn-alt go" href="#">Відкрити</a>
+      </div>
+    </div>
+
+    <div class="done-bar">
+      <div>
+        <h2 class="u" style="font-size:20px;font-weight:700">Тему закрито</h2>
+        <p>Повернись до неї через 10 днів — так матеріал утримується в пам’яті надовше.</p>
+      </div>
+      <a class="btn btn-green btn-lg" href="#">Наступна тема</a>
+    </div>
+
+    <div class="pager">
+      <a class="pg" href="#">
+        <span>← Попередня тема</span>
+        <b>Бонус: 5 подкастів для повторення</b>
+      </a>
+      <a class="pg next" href="#">
+        <span>Наступна тема →</span>
+        <b>3 Тема. Русь-Україна. Київська держава</b>
+      </a>
+    </div>
+
+    <a class="report" href="#">✉︎ Знайшли помилку в матеріалі? Напишіть нам</a>
+  </main>
+</div>
+
+<script>
+// плеєр: підставляємо iframe тільки після кліку
+document.getElementById('play').addEventListener('click', function(){
+  var box = this.closest('.video');
+  var f = document.createElement('iframe');
+  f.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1';
+  f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+  f.allowFullscreen = true;
+  f.title = 'Лекція 2. Стародавня історія України';
+  box.innerHTML = '';
+  box.appendChild(f);
+});
+
+// список тем на вузьких екранах
+var toggle = document.getElementById('toggle');
+var list = document.getElementById('list');
+toggle.addEventListener('click', function(){
+  var open = list.hasAttribute('hidden');
+  if (open) { list.removeAttribute('hidden'); } else { list.setAttribute('hidden',''); }
+  toggle.setAttribute('aria-expanded', open);
+  toggle.textContent = open ? 'Список тем ▾' : 'Список тем ▸';
+});
+</script>
+</body>
+</html>
