@@ -8,8 +8,7 @@ export function Footer() {
       <div className="footer-inner">
         <div>
           <Link to="/" className="footer-brand">
-            <span className="footer-brand-mark" aria-hidden="true" />
-            UpGrade NMT
+            UpGrade<span className="logo-dot">.</span>NMT
           </Link>
           <p className="footer-tagline">
             Підготовка до НМТ з історії України та української мови: відеолекції, конспекти,

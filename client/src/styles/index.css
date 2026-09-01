@@ -321,9 +321,7 @@ body, .app-main { cursor: auto; }
 }
 
 .navbar-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+  display: inline-block;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 19px;
@@ -332,17 +330,8 @@ body, .app-main { cursor: auto; }
   letter-spacing: -0.01em;
 }
 
-.navbar-brand-mark {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background: var(--primary);
-  transition: transform 0.4s var(--ease-out);
-  flex-shrink: 0;
-}
-
-.navbar-brand:hover .navbar-brand-mark {
-  transform: rotate(-8deg) scale(1.08);
+.logo-dot {
+  color: var(--primary);
 }
 
 .navbar-links {
@@ -1137,18 +1126,8 @@ body, .app-main { cursor: auto; }
   font-weight: 700;
   font-size: 18px;
   text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
+  display: inline-block;
   margin-bottom: 12px;
-}
-
-.footer-brand-mark {
-  width: 18px;
-  height: 18px;
-  border-radius: 6px;
-  background: var(--primary);
-  flex-shrink: 0;
 }
 
 .footer-tagline {
