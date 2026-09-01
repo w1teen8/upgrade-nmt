@@ -34,6 +34,11 @@ jobs:
         env:
           VITE_API_URL: https://upgrade-nmt.onrender.com
 
+      - name: Copy marketing landing page
+        run: |
+          mkdir -p client/dist/landing
+          cp landing/index.html client/dist/landing/index.html
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
