@@ -235,7 +235,8 @@ body, .app-main { cursor: auto; }
 
 .section-title.align-left {
   text-align: left;
-  margin: 0 0 48px;
+  max-width: var(--container-wide);
+  margin: 0 auto 48px;
 }
 
 .section-title h2 {
@@ -323,11 +324,12 @@ body, .app-main { cursor: auto; }
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 19px;
   text-decoration: none;
   color: var(--ink);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .navbar-brand-mark {
@@ -1111,6 +1113,7 @@ body, .app-main { cursor: auto; }
   color: var(--deep-ink-muted);
   padding: 64px 24px 28px;
   margin-top: auto;
+  border-top: 1px solid var(--deep-line-strong);
 }
 
 .footer-inner {
@@ -1125,7 +1128,8 @@ body, .app-main { cursor: auto; }
 
 .footer-brand {
   color: #fff;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-weight: 700;
   font-size: 18px;
   text-decoration: none;
   display: inline-flex;
