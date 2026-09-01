@@ -31,8 +31,7 @@ export function Navbar() {
     <header className={`navbar ${scrolled ? "is-scrolled" : ""}`}>
       <div className="navbar-inner">
         <Link to="/" className="navbar-brand">
-          <span className="navbar-brand-mark" aria-hidden="true" />
-          UpGrade NMT
+          UpGrade<span className="logo-dot">.</span>NMT
         </Link>
 
         <button
