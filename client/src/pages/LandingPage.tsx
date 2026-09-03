@@ -119,7 +119,13 @@ export function LandingPage() {
               <button type="button" className="btn btn-outline btn-lg" onClick={scrollToCourses}>
                 Обери свій курс
               </button>
-              <a className="hero-telegram" href="https://t.me/upgradenmt" target="_blank" rel="noreferrer">
+              <a className="btn btn-telegram btn-lg" href="https://t.me/upgradenmt" target="_blank" rel="noreferrer">
+                <svg className="tg-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M21.05 3.16 2.7 10.42c-1.24.5-1.23 1.19-.23 1.5l4.69 1.46 1.8 5.6c.22.6.4.84.75.84.32 0 .5-.15.72-.36l1.98-1.9 4.36 3.2c.8.44 1.38.21 1.58-.74l2.87-13.5c.3-1.2-.44-1.75-1.17-1.36Zm-4.24 3.35-7.6 6.9-.32 3.4-1.55-4.83 8.6-5.85c.4-.27.78-.12.48.15Z"
+                    fill="currentColor"
+                  />
+                </svg>
                 Наш Telegram-канал
               </a>
             </div>
