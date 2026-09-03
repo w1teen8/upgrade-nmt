@@ -119,6 +119,9 @@ export function LandingPage() {
               <button type="button" className="btn btn-outline btn-lg" onClick={scrollToCourses}>
                 Обери свій курс
               </button>
+              <a className="hero-telegram" href="https://t.me/upgradenmt" target="_blank" rel="noreferrer">
+                Наш Telegram-канал
+              </a>
             </div>
             <p className="hero-fine-print">
               Доступ з телефона й ноутбука. Скасувати підписку можна будь-коли.
