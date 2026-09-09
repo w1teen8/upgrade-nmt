@@ -11,7 +11,7 @@ const ICONS: Record<string, JSX.Element> = {
 
 const OLD_PRICE: Record<string, number> = {
   full: 1500,
-  turbo: 400,
+  turbo: 1200,
 };
 
 const TOPIC_COUNT: Record<string, number> = {
