@@ -85,13 +85,15 @@ function scrollToCourses() {
 
 export function LandingPage() {
   const [courses, setCourses] = useState<Course[]>([]);
+  const [coursesLoading, setCoursesLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [score, setScore] = useState(175);
 
   useEffect(() => {
     listCourses()
       .then(setCourses)
-      .catch(() => setError("Не вдалося завантажити курси."));
+      .catch(() => setError("Не вдалося завантажити курси."))
+      .finally(() => setCoursesLoading(false));
   }, []);
 
   const daysLeft = daysUntilExam();
@@ -183,6 +185,7 @@ export function LandingPage() {
         </div>
 
         {error && <p className="form-error">{error}</p>}
+        {coursesLoading && !error && <p className="courses-loading">Завантажуємо курси…</p>}
 
         {courses.length > 0 && (
           <div className="course-collection">

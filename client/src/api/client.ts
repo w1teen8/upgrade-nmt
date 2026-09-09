@@ -18,14 +18,16 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// Render's free plan spins the backend down after inactivity: the first
-// request after a while can hit a still-booting instance and come back as a
-// gateway error (502/503/504) or a raw network failure within a second or
-// two, rather than the request just being slow. Retry a couple of times
-// with backoff before giving up, so a cold start doesn't look like a
-// broken login/courses list to the user.
+// Render's free plan spins the backend down after inactivity, and warns
+// that waking it back up can take "50 seconds or more". The first request
+// after a while hits a still-booting instance and comes back as a gateway
+// error (502/503/504) or a raw network failure almost immediately, rather
+// than the request just being slow — so retrying needs to keep going for
+// close to that whole window, not just a couple of seconds, or a genuine
+// cold start still looks like a broken login/courses list to the user.
 const RETRY_STATUSES = new Set([502, 503, 504]);
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 6;
+const RETRY_DELAYS_MS = [2000, 4000, 6000, 8000, 10000]; // ~30s total, roughly matching Render's cold-start window
 
 export async function apiFetch<T>(
   path: string,
@@ -47,14 +49,14 @@ export async function apiFetch<T>(
       });
     } catch {
       if (attempt < MAX_ATTEMPTS) {
-        await sleep(attempt * 1500);
+        await sleep(RETRY_DELAYS_MS[attempt - 1]);
         continue;
       }
       throw new ApiError(0, "NETWORK_ERROR", "Не вдалося з'єднатися із сервером. Спробуйте ще раз.");
     }
 
     if (RETRY_STATUSES.has(res.status) && attempt < MAX_ATTEMPTS) {
-      await sleep(attempt * 1500);
+      await sleep(RETRY_DELAYS_MS[attempt - 1]);
       continue;
     }
 

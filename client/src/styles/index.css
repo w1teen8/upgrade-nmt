@@ -1250,6 +1250,12 @@ body, .app-main { cursor: auto; }
   font-size: 14px;
 }
 
+.courses-loading {
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 24px;
+}
+
 /* ---------- Course content / topics ---------- */
 
 .course-detail-page .course-price {
