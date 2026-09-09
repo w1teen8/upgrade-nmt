@@ -7,6 +7,7 @@ import { resendVerification } from "../api/auth.api";
 const ERROR_MESSAGES: Record<string, string> = {
   INVALID_CREDENTIALS: "Невірна пошта або пароль.",
   EMAIL_NOT_VERIFIED: "Підтвердіть email перед входом.",
+  NETWORK_ERROR: "Сервер прокидається після простою — спробуйте ще раз через кілька секунд.",
 };
 
 export function LoginPage() {
