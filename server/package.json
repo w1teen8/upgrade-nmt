@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.json && node -e \"require('fs').cpSync('src/db/migrations','dist/db/migrations',{recursive:true})\"",
+    "prestart": "node dist/db/migrate.js",
     "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
     "import:materials": "tsx src/scripts/import-materials-folder.ts"
