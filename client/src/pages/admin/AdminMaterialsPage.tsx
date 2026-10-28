@@ -18,6 +18,8 @@ export function AdminMaterialsPage() {
   const [type, setType] = useState("conspect");
   const [title, setTitle] = useState("");
   const [url, setUrl] = useState("");
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editUrl, setEditUrl] = useState("");
 
   function reload() {
     adminApi.listMaterials(topicId).then(setMaterials);
@@ -31,6 +33,20 @@ export function AdminMaterialsPage() {
     await adminApi.createMaterial(topicId, type, title, url, materials.length);
     setTitle("");
     setUrl("");
+    reload();
+  }
+
+  function startEdit(m: AdminMaterial) {
+    setEditingId(m.id);
+    setEditUrl(m.url);
+  }
+
+  async function handleSaveUrl(e: FormEvent) {
+    e.preventDefault();
+    if (editingId === null || !editUrl.trim()) return;
+    await adminApi.updateMaterial(editingId, { url: editUrl.trim() });
+    setEditingId(null);
+    setEditUrl("");
     reload();
   }
 
@@ -51,9 +67,24 @@ export function AdminMaterialsPage() {
         {materials.map((m) => (
           <li key={m.id}>
             [{m.type}] <a href={m.url} target="_blank" rel="noreferrer">{m.title}</a>{" "}
+            <button className="link-button" onClick={() => startEdit(m)}>
+              Змінити посилання
+            </button>{" "}
             <button className="link-button" onClick={() => handleDelete(m.id)}>
               Видалити
             </button>
+            {editingId === m.id && (
+              <form className="admin-form" onSubmit={handleSaveUrl}>
+                <label>
+                  Нове посилання
+                  <input value={editUrl} onChange={(e) => setEditUrl(e.target.value)} required />
+                </label>
+                <button type="submit">Зберегти</button>{" "}
+                <button type="button" className="link-button" onClick={() => setEditingId(null)}>
+                  Скасувати
+                </button>
+              </form>
+            )}
           </li>
         ))}
       </ul>

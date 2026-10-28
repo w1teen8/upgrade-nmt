@@ -9,6 +9,7 @@
     "prestart": "node dist/db/migrate.js",
     "start": "node dist/index.js",
     "migrate": "tsx src/db/migrate.ts",
+    "set:video": "tsx src/scripts/set-video-links.ts",
     "import:materials": "tsx src/scripts/import-materials-folder.ts"
   },
   "dependencies": {
