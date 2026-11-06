@@ -4,6 +4,9 @@ import { CourseCard } from "../components/CourseCard";
 import { FaqAccordion, FaqEntry } from "../components/FaqAccordion";
 
 const TOTAL_TOPICS = 69;
+const TELEGRAM_CONTACT = "https://t.me/w1teen0";
+const BUNDLE_PRICE = 2000;
+const BUNDLE_OLD_PRICE = 2400;
 const EXAM_DATE = new Date(2027, 5, 1); // 1 червня 2027
 
 function daysUntilExam(): number {
@@ -186,6 +189,34 @@ export function LandingPage() {
 
         {error && <p className="form-error">{error}</p>}
         {coursesLoading && !error && <p className="courses-loading">Завантажуємо курси…</p>}
+
+        <div className="bundle-banner">
+          <div className="bundle-banner-main">
+            <span className="bundle-banner-badge">Акція</span>
+            <h3>Два повні курси разом</h3>
+            <p>
+              Українська мова та Історія України — повні курси на весь рік підготовки. Разом
+              вигідніше, ніж купувати окремо.
+            </p>
+          </div>
+          <div className="bundle-banner-buy">
+            <span className="bundle-banner-price">
+              <span className="price-old">{BUNDLE_OLD_PRICE} грн</span>
+              {BUNDLE_PRICE} грн
+            </span>
+            <span className="bundle-banner-save">
+              Економія {BUNDLE_OLD_PRICE - BUNDLE_PRICE} грн
+            </span>
+            <a
+              href={TELEGRAM_CONTACT}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-lg"
+            >
+              Забрати два курси
+            </a>
+          </div>
+        </div>
 
         {courses.length > 0 && (
           <div className="course-collection">

@@ -734,6 +734,91 @@ body, .app-main { cursor: auto; }
 
 /* ---------- Courses ---------- */
 
+.bundle-banner {
+  max-width: var(--container-wide);
+  margin: 0 auto 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 34px;
+  background: var(--deep);
+  border: 1px solid var(--deep);
+  border-radius: var(--radius-lg);
+  color: #ffffff;
+}
+
+.bundle-banner-main {
+  flex: 1 1 420px;
+}
+
+.bundle-banner-badge {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.bundle-banner-main h3 {
+  margin: 0 0 10px;
+  color: #ffffff;
+}
+
+.bundle-banner-main p {
+  margin: 0;
+  max-width: 54ch;
+  color: var(--deep-ink-muted);
+}
+
+.bundle-banner-buy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.bundle-banner-price {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #ffffff;
+}
+
+.bundle-banner-price .price-old {
+  color: var(--deep-ink-muted);
+}
+
+.bundle-banner-save {
+  margin-bottom: 8px;
+  color: var(--primary-bright);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 767px) {
+  .bundle-banner {
+    padding: 26px 22px;
+    gap: 20px;
+  }
+
+  .bundle-banner-buy {
+    width: 100%;
+  }
+
+  .bundle-banner-buy .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .course-collection {
   max-width: var(--container-wide);
   margin: 0 auto;
